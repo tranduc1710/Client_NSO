@@ -198,9 +198,10 @@ public class GameMidlet
 	public static void getStrSv()
 	{
 		string str = connectHTTP("https://raw.githubusercontent.com/ductc1710/ip_config/refs/heads/master/ip.txt");
+		// string str = "";
 		if (str == null || str.Length <= 0)
 		{
-			str = "Hoa quả:14.189.21.20:14444:0:0,Localhost:127.0.0.1:14444:0:0";
+			str = "Localhost:127.0.0.1:14444:0:0";
 		}
 		getServerList(str);
 	}
@@ -290,7 +291,7 @@ public class GameMidlet
 		muzic = -1;
 		latitude = string.Empty;
 		longitude = string.Empty;
-		java = "Ninja Hoa quả:14.189.21.20:14444:0:0";
-		smartPhone = "Ninja Hoa quả:14.189.21.20:14444:0:0";
+		java = "Localhost:127.0.0.1:14444:0:0";
+		smartPhone = "Localhost:127.0.0.1:14444:0:0";
 	}
 }

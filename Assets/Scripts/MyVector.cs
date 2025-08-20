@@ -2,7 +2,7 @@ using System.Collections;
 
 public class MyVector
 {
-	private ArrayList a;
+	public ArrayList a;
 
 	public MyVector()
 	{

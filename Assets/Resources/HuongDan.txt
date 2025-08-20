@@ -1,0 +1,14 @@
+- ts: Tàn sát
+- die: Tự sát
+- e|pe: Kết thúc Auto
+- bux: Buff xa
+- hsx: Hsx xa
+- buff: Buff team
+- mnv: Đến map nhiệm vụ
+- mnvp: Đến map nhiệm vụ hằng ngày
+- mnvtt: Đến map nhiệm vụ tà thú
+- cnhat: Bật/tắt hút vật phẩm
+- cmap: Chuyển map khi hết boss
+- neta: Né tinh anh
+- netl: Né thủ lĩnh
+- nda: Bật/tắt nhặt đá (VD: nda5 = Nhặt đá 5 | nda = Bật/tắt nhặt đá all)

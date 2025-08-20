@@ -517,12 +517,51 @@ public class Code
 			Paint(Auto.Actions.ChuyenMapHetBoss ? "Bật: Chuyển map hết boss" : "Tắt: Chuyển map hết boss");
 			return true;
 		}
+		if (text.Contains("neta"))
+		{
+			Auto.Actions.isTinhAnh = !Auto.Actions.isTinhAnh;
+			Paint(!Auto.Actions.isTinhAnh ? "Bật: Né Tinh anh" : "Tắt: Né Tinh anh");
+			return true;
+		}
+		if (text.Contains("netl"))
+		{
+			Auto.Actions.isThuLinh = !Auto.Actions.isThuLinh;
+			Paint(!Auto.Actions.isThuLinh ? "Bật: Né Thủ lĩnh" : "Tắt: Né Thủ lĩnh");
+			return true;
+		}
+		if (text.Equals("nda"))
+		{
+			if (num == null || num <= 0)
+			{
+				if (GameScr.nhatDaLv == -1)
+				{
+					GameScr.nhatDaLv = 0;
+					Paint("Bật nhặt đá all");
+				}
+				else
+				{
+					GameScr.nhatDaLv = -1;
+					Paint("Tắt nhặt đá all");
+				}
+
+			}
+			else if (num > 0)
+			{
+				if (num > 12)
+				{
+					num = 12;
+				}
+				GameScr.nhatDaLv = num;
+				Paint("Bật nhặt đá: " + GameScr.nhatDaLv + " trở lên");
+			}
+			return true;
+		}
 		return false;
 	}
 
 	public static void Paint(string text)
 	{
-		ChatPopup.addChatPopupMultiLine("[Ninja Hoa quả] " + text, 300, Char.getMyChar());
+		ChatPopup.addChatPopupMultiLine("[Hoa quả] " + text, 300, Char.getMyChar());
 	}
 
 	public static void GoMap(int mapID)

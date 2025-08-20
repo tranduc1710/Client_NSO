@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameScr : mScreen, IChatable, IActionListener
 {
@@ -1068,6 +1069,10 @@ public class GameScr : mScreen, IChatable, IActionListener
 	public static Image night;
 
 	public static bool CheDoDem;
+
+	public static int nhatDaLv = 0;
+
+	public static int nhatTbLv = 0;
 
 	public GameScr()
 	{
@@ -3339,8 +3344,8 @@ public class GameScr : mScreen, IChatable, IActionListener
 		{
 			return;
 		}
-        //Debug.LogError("Key>>>> " + mScreen.keyTouch);
-        if (GameCanvas.isTouch && !ChatTextField.gI().isShow && !GameCanvas.menu.showMenu)
+		//Debug.LogError("Key>>>> " + mScreen.keyTouch);
+		if (GameCanvas.isTouch && !ChatTextField.gI().isShow && !GameCanvas.menu.showMenu)
 		{
 			doViewMessagebyTouch();
 			updateKeyTouchControl();
@@ -4548,7 +4553,7 @@ public class GameScr : mScreen, IChatable, IActionListener
 				Sound.play(Sound.MBClick, 0.5f);
 				if (!Main.isPC)
 				{
-                    ChatTextField.gI().startChat(this, mResources.PUBLICCHAT[0]);
+					ChatTextField.gI().startChat(this, mResources.PUBLICCHAT[0]);
 				}
 				else
 				{
@@ -4821,6 +4826,7 @@ public class GameScr : mScreen, IChatable, IActionListener
 		{
 			TuDanh();
 		}
+		NhatDa();
 		HutVP();
 		runArrow++;
 		if (runArrow > 3)
@@ -5474,7 +5480,7 @@ public class GameScr : mScreen, IChatable, IActionListener
 				goto IL_0162;
 			}
 			continue;
-			IL_0162:
+		IL_0162:
 			if (@char != null)
 			{
 				if (indexRow == i)
@@ -5825,7 +5831,7 @@ public class GameScr : mScreen, IChatable, IActionListener
 				{
 					mFont.tahoma_7_yellow.drawString(g, "Ninja Hoa quả", 220, 20, 0, mFont.tahoma_7_grey);
 				}
-				mFont.tahoma_7_yellow.drawString(g, "Thời gian: " + DateTime.Now.ToString("dd/MM/yyyy - HH:mm:ss"), 70, GameCanvas.h - 150, mFont.CENTER, mFont.tahoma_7_red);
+				// mFont.tahoma_7_yellow.drawString(g, "Thời gian: " + DateTime.Now.ToString("dd/MM/yyyy - HH:mm:ss"), 70, GameCanvas.h - 150, mFont.CENTER, mFont.tahoma_7_red);
 				mFont.tahoma_7_yellow.drawString(g, string.Concat(new object[2]
 				{
 					"Map: ",
@@ -6470,46 +6476,46 @@ public class GameScr : mScreen, IChatable, IActionListener
 		{
 			switch (i)
 			{
-			case 0:
-			case 2:
-			case 4:
-			case 6:
-			case 8:
-				g.setColor(0);
-				g.fillRect(popupX + 4 + 1, popupY + 35 + i / 2 * num + 1, num - 1, num - 1);
-				if (indextabTrangbi == 0)
-				{
-					if (mResources.ITEMNAME[i].Length > 1)
+				case 0:
+				case 2:
+				case 4:
+				case 6:
+				case 8:
+					g.setColor(0);
+					g.fillRect(popupX + 4 + 1, popupY + 35 + i / 2 * num + 1, num - 1, num - 1);
+					if (indextabTrangbi == 0)
 					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + 7 + 11, popupY + 36 + i / 2 * num + 2, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][1], popupX + 7 + 11, popupY + 36 + i / 2 * num + 2 + 9, 2);
+						if (mResources.ITEMNAME[i].Length > 1)
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + 7 + 11, popupY + 36 + i / 2 * num + 2, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][1], popupX + 7 + 11, popupY + 36 + i / 2 * num + 2 + 9, 2);
+						}
+						else
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + 7 + 11, popupY + 36 + i / 2 * num + 2 + 5, 2);
+						}
 					}
-					else
+					continue;
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+				case 9:
+					g.setColor(0);
+					g.fillRect(popupX + popupW - num - 4, popupY + 35 + i / 2 * num + 1, num - 1, num - 1);
+					if (indextabTrangbi == 0)
 					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + 7 + 11, popupY + 36 + i / 2 * num + 2 + 5, 2);
+						if (mResources.ITEMNAME[i].Length > 1)
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + popupW - num / 2 - 4, popupY + 36 + i / 2 * num + 2, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][1], popupX + popupW - num / 2 - 4, popupY + 36 + i / 2 * num + 2 + 9, 2);
+						}
+						else
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + popupW - num / 2 - 4, popupY + 36 + i / 2 * num + 2 + 5, 2);
+						}
 					}
-				}
-				continue;
-			case 1:
-			case 3:
-			case 5:
-			case 7:
-			case 9:
-				g.setColor(0);
-				g.fillRect(popupX + popupW - num - 4, popupY + 35 + i / 2 * num + 1, num - 1, num - 1);
-				if (indextabTrangbi == 0)
-				{
-					if (mResources.ITEMNAME[i].Length > 1)
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + popupW - num / 2 - 4, popupY + 36 + i / 2 * num + 2, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][1], popupX + popupW - num / 2 - 4, popupY + 36 + i / 2 * num + 2 + 9, 2);
-					}
-					else
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[i][0], popupX + popupW - num / 2 - 4, popupY + 36 + i / 2 * num + 2 + 5, 2);
-					}
-				}
-				continue;
+					continue;
 			}
 			if (i != 9 && i != 10 && i != 11 && i != 12 && i != 13 && i != 14 && i != 15)
 			{
@@ -6614,61 +6620,61 @@ public class GameScr : mScreen, IChatable, IActionListener
 				}
 				switch (num10)
 				{
-				case 0:
-				case 2:
-				case 4:
-				case 6:
-				case 8:
-				case 10:
-				{
-					int num13 = popupX + 4;
-					int y2 = popupY + 34 + num10 / 2 * num;
-					paintItem(g, item2, num13 - 1, y2, 0, 1);
-					break;
-				}
-				case 1:
-				case 3:
-				case 5:
-				case 7:
-				case 9:
-				{
-					int num14 = popupX + popupW - num - 5;
-					int num15 = popupY + 35 + num10 / 2 * num;
-					paintItem(g, item2, num14 - 1, num15 - 1, 0, 1);
-					break;
-				}
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-				{
-					switch (num10)
-					{
+					case 0:
+					case 2:
+					case 4:
+					case 6:
+					case 8:
 					case 10:
-						num2 = 1;
-						break;
+						{
+							int num13 = popupX + 4;
+							int y2 = popupY + 34 + num10 / 2 * num;
+							paintItem(g, item2, num13 - 1, y2, 0, 1);
+							break;
+						}
+					case 1:
+					case 3:
+					case 5:
+					case 7:
+					case 9:
+						{
+							int num14 = popupX + popupW - num - 5;
+							int num15 = popupY + 35 + num10 / 2 * num;
+							paintItem(g, item2, num14 - 1, num15 - 1, 0, 1);
+							break;
+						}
 					case 11:
-						num2 = 2;
-						break;
 					case 12:
-						num2 = 3;
-						break;
 					case 13:
-						num2 = 4;
-						break;
 					case 14:
-						num2 = 5;
-						break;
 					case 15:
-						num2 = 6;
-						break;
-					}
-					int num11 = popupX + 2 + 1 + num2 * (num + 2) - num;
-					int num12 = popupY + 35 + 5 * num;
-					paintItem(g, item2, num11 - 2, num12 - 1, 0, 1);
-					break;
-				}
+						{
+							switch (num10)
+							{
+								case 10:
+									num2 = 1;
+									break;
+								case 11:
+									num2 = 2;
+									break;
+								case 12:
+									num2 = 3;
+									break;
+								case 13:
+									num2 = 4;
+									break;
+								case 14:
+									num2 = 5;
+									break;
+								case 15:
+									num2 = 6;
+									break;
+							}
+							int num11 = popupX + 2 + 1 + num2 * (num + 2) - num;
+							int num12 = popupY + 35 + 5 * num;
+							paintItem(g, item2, num11 - 2, num12 - 1, 0, 1);
+							break;
+						}
 				}
 				if (GameCanvas.gameTick % 4 == 0)
 				{
@@ -6688,50 +6694,50 @@ public class GameScr : mScreen, IChatable, IActionListener
 			}
 			switch (l)
 			{
-			case 0:
-			case 2:
-			case 4:
-			case 6:
-			case 8:
-				g.setColor(16777215);
-				g.drawRect(popupX + 4, popupY + 35 + l / 2 * num, num, num);
-				paintSelectHighlight(popupX + 5 - 2, popupY + 35 + l / 2 * num - 1, g);
-				continue;
-			case 1:
-			case 3:
-			case 5:
-			case 7:
-			case 9:
-				g.setColor(16777215);
-				g.drawRect(popupX + popupW - num - 4 - 1, popupY + 35 + l / 2 * num, num, num);
-				paintSelectHighlight(popupX + popupW - num - 4 - 2, popupY + 35 + l / 2 * num - 1, g);
-				continue;
+				case 0:
+				case 2:
+				case 4:
+				case 6:
+				case 8:
+					g.setColor(16777215);
+					g.drawRect(popupX + 4, popupY + 35 + l / 2 * num, num, num);
+					paintSelectHighlight(popupX + 5 - 2, popupY + 35 + l / 2 * num - 1, g);
+					continue;
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+				case 9:
+					g.setColor(16777215);
+					g.drawRect(popupX + popupW - num - 4 - 1, popupY + 35 + l / 2 * num, num, num);
+					paintSelectHighlight(popupX + popupW - num - 4 - 2, popupY + 35 + l / 2 * num - 1, g);
+					continue;
 			}
 			if (l == 9 || l == 10 || l == 11 || l == 12 || l == 13 || l == 14 || l == 15)
 			{
 				switch (l)
 				{
-				case 9:
-					num2 = 0;
-					break;
-				case 10:
-					num2 = 1;
-					break;
-				case 11:
-					num2 = 2;
-					break;
-				case 12:
-					num2 = 3;
-					break;
-				case 13:
-					num2 = 4;
-					break;
-				case 14:
-					num2 = 5;
-					break;
-				case 15:
-					num2 = 6;
-					break;
+					case 9:
+						num2 = 0;
+						break;
+					case 10:
+						num2 = 1;
+						break;
+					case 11:
+						num2 = 2;
+						break;
+					case 12:
+						num2 = 3;
+						break;
+					case 13:
+						num2 = 4;
+						break;
+					case 14:
+						num2 = 5;
+						break;
+					case 15:
+						num2 = 6;
+						break;
 				}
 				int num16 = popupX + 2 + 1 + num2 * (num + 2) - num;
 				int num17 = popupY + 35 + 5 * num;
@@ -6968,54 +6974,54 @@ public class GameScr : mScreen, IChatable, IActionListener
 				g.fillRect(xMounts[j] - 1, yMounts[j] - 1, indexSize + 3, indexSize + 3);
 				switch (j)
 				{
-				case 0:
-					if (currentCharViewInfo.isHaveMoto())
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[22][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[22][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					else
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[19][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[19][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					break;
-				case 1:
-					if (currentCharViewInfo.isHaveMoto())
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[20][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[20][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					else
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[16][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[16][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					break;
-				case 2:
-					if (currentCharViewInfo.isHaveMoto())
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[21][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[21][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					else
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[17][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[17][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					break;
-				case 3:
-					if (currentCharViewInfo.isHaveMoto())
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[23][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[23][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					else
-					{
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[18][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
-						mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[18][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
-					}
-					break;
+					case 0:
+						if (currentCharViewInfo.isHaveMoto())
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[22][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[22][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						else
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[19][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[19][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						break;
+					case 1:
+						if (currentCharViewInfo.isHaveMoto())
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[20][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[20][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						else
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[16][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[16][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						break;
+					case 2:
+						if (currentCharViewInfo.isHaveMoto())
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[21][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[21][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						else
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[17][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[17][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						break;
+					case 3:
+						if (currentCharViewInfo.isHaveMoto())
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[23][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[23][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						else
+						{
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[18][0], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 - 10, 2);
+							mFont.tahoma_7_grey.drawString(g, mResources.ITEMNAME[18][1], xMounts[j] + indexSize / 2, yMounts[j] + indexSize / 2 + 2, 2);
+						}
+						break;
 				}
 			}
 			if (indexSelect == j && indexTitle == 1 && indexSelect < 4)
@@ -14621,19 +14627,19 @@ public class GameScr : mScreen, IChatable, IActionListener
 		{
 			switch (Char.getMyChar().nClass.classId)
 			{
-			case 0:
-				mFont.tahoma_7_green.drawString(g, mResources.HELPPOTENTIAL1[0], popupX + 10, popupY + 52 + (num - 10) / 2 + 4 * (num + 4), 0);
-				break;
-			case 1:
-			case 3:
-			case 5:
-				mFont.tahoma_7_green.drawString(g, mResources.HELPPOTENTIAL2[indexTitle - 1], popupX + 10, popupY + 52 + (num - 10) / 2 + 4 * (num + 4), 0);
-				break;
-			case 2:
-			case 4:
-			case 6:
-				mFont.tahoma_7_green.drawString(g, mResources.HELPPOTENTIAL3[indexTitle - 1], popupX + 10, popupY + 52 + (num - 10) / 2 + 4 * (num + 4), 0);
-				break;
+				case 0:
+					mFont.tahoma_7_green.drawString(g, mResources.HELPPOTENTIAL1[0], popupX + 10, popupY + 52 + (num - 10) / 2 + 4 * (num + 4), 0);
+					break;
+				case 1:
+				case 3:
+				case 5:
+					mFont.tahoma_7_green.drawString(g, mResources.HELPPOTENTIAL2[indexTitle - 1], popupX + 10, popupY + 52 + (num - 10) / 2 + 4 * (num + 4), 0);
+					break;
+				case 2:
+				case 4:
+				case 6:
+					mFont.tahoma_7_green.drawString(g, mResources.HELPPOTENTIAL3[indexTitle - 1], popupX + 10, popupY + 52 + (num - 10) / 2 + 4 * (num + 4), 0);
+					break;
 			}
 		}
 	}
@@ -14646,93 +14652,93 @@ public class GameScr : mScreen, IChatable, IActionListener
 			{
 				switch (typeUI)
 				{
-				case 2:
-					return (arrItemWeapon.Length <= indexSelect) ? null : arrItemWeapon[indexSelect];
-				case 3:
-					return Char.getMyChar().arrItemBag[indexSelect];
-				case 4:
-					return Char.getMyChar().arrItemBox[indexSelect];
-				case 5:
-					return currentCharViewInfo.arrItemBody[indexSelect + indextabTrangbi];
-				case 6:
-					return (arrItemStack.Length <= indexSelect) ? null : arrItemStack[indexSelect];
-				case 7:
-					return (arrItemStackLock.Length <= indexSelect) ? null : arrItemStackLock[indexSelect];
-				case 8:
-					return (arrItemGrocery.Length <= indexSelect) ? null : arrItemGrocery[indexSelect];
-				case 9:
-					return (arrItemGroceryLock.Length <= indexSelect) ? null : arrItemGroceryLock[indexSelect];
-				case 10:
-					return arrItemUpGrade[indexSelect];
-				case 11:
-					return arrItemUpPeal[indexSelect];
-				case 14:
-					return (arrItemStore.Length <= indexSelect) ? null : arrItemStore[indexSelect];
-				case 15:
-					return (arrItemBook.Length <= indexSelect) ? null : arrItemBook[indexSelect];
-				case 16:
-					return (arrItemLien.Length <= indexSelect) ? null : arrItemLien[indexSelect];
-				case 17:
-					return (arrItemNhan.Length <= indexSelect) ? null : arrItemNhan[indexSelect];
-				case 18:
-					return (arrItemNgocBoi.Length <= indexSelect) ? null : arrItemNgocBoi[indexSelect];
-				case 19:
-					return (arrItemPhu.Length <= indexSelect) ? null : arrItemPhu[indexSelect];
-				case 20:
-					return (arrItemNonNam.Length <= indexSelect) ? null : arrItemNonNam[indexSelect];
-				case 21:
-					return (arrItemNonNu.Length <= indexSelect) ? null : arrItemNonNu[indexSelect];
-				case 22:
-					return (arrItemAoNam.Length <= indexSelect) ? null : arrItemAoNam[indexSelect];
-				case 23:
-					return (arrItemAoNu.Length <= indexSelect) ? null : arrItemAoNu[indexSelect];
-				case 24:
-					return (arrItemGangTayNam.Length <= indexSelect) ? null : arrItemGangTayNam[indexSelect];
-				case 25:
-					return (arrItemGangTayNu.Length <= indexSelect) ? null : arrItemGangTayNu[indexSelect];
-				case 26:
-					return (arrItemQuanNam.Length <= indexSelect) ? null : arrItemQuanNam[indexSelect];
-				case 27:
-					return (arrItemQuanNu.Length <= indexSelect) ? null : arrItemQuanNu[indexSelect];
-				case 28:
-					return (arrItemGiayNam.Length <= indexSelect) ? null : arrItemGiayNam[indexSelect];
-				case 29:
-					return (arrItemGiayNu.Length <= indexSelect) ? null : arrItemGiayNu[indexSelect];
-				case 32:
-					return (arrItemFashion.Length <= indexSelect) ? null : arrItemFashion[indexSelect];
-				case 34:
-					return (arrItemClanShop.Length <= indexSelect) ? null : arrItemClanShop[indexSelect];
-				case 35:
-					return (arrItemElites.Length <= indexSelect) ? null : arrItemElites[indexSelect];
-				case 43:
-					return arrItemUpPeal[indexSelect];
-				case 44:
-					return arrItemSplit[indexSelect];
-				case 45:
-					return arrItemSplit[indexSelect];
-				case 46:
-					return arrItemSplit[indexSelect];
-				case 47:
-					return arrItemUpGrade[indexSelect];
-				case 48:
-					return arrItemSplit[indexSelect];
-				case 51:
-					return (arrItemFashion.Length <= indexSelect) ? null : arrItemFashion[indexSelect];
-				case 12:
-				case 13:
-				case 30:
-				case 31:
-				case 33:
-				case 36:
-				case 37:
-				case 38:
-				case 39:
-				case 40:
-				case 41:
-				case 42:
-				case 49:
-				case 50:
-					break;
+					case 2:
+						return (arrItemWeapon.Length <= indexSelect) ? null : arrItemWeapon[indexSelect];
+					case 3:
+						return Char.getMyChar().arrItemBag[indexSelect];
+					case 4:
+						return Char.getMyChar().arrItemBox[indexSelect];
+					case 5:
+						return currentCharViewInfo.arrItemBody[indexSelect + indextabTrangbi];
+					case 6:
+						return (arrItemStack.Length <= indexSelect) ? null : arrItemStack[indexSelect];
+					case 7:
+						return (arrItemStackLock.Length <= indexSelect) ? null : arrItemStackLock[indexSelect];
+					case 8:
+						return (arrItemGrocery.Length <= indexSelect) ? null : arrItemGrocery[indexSelect];
+					case 9:
+						return (arrItemGroceryLock.Length <= indexSelect) ? null : arrItemGroceryLock[indexSelect];
+					case 10:
+						return arrItemUpGrade[indexSelect];
+					case 11:
+						return arrItemUpPeal[indexSelect];
+					case 14:
+						return (arrItemStore.Length <= indexSelect) ? null : arrItemStore[indexSelect];
+					case 15:
+						return (arrItemBook.Length <= indexSelect) ? null : arrItemBook[indexSelect];
+					case 16:
+						return (arrItemLien.Length <= indexSelect) ? null : arrItemLien[indexSelect];
+					case 17:
+						return (arrItemNhan.Length <= indexSelect) ? null : arrItemNhan[indexSelect];
+					case 18:
+						return (arrItemNgocBoi.Length <= indexSelect) ? null : arrItemNgocBoi[indexSelect];
+					case 19:
+						return (arrItemPhu.Length <= indexSelect) ? null : arrItemPhu[indexSelect];
+					case 20:
+						return (arrItemNonNam.Length <= indexSelect) ? null : arrItemNonNam[indexSelect];
+					case 21:
+						return (arrItemNonNu.Length <= indexSelect) ? null : arrItemNonNu[indexSelect];
+					case 22:
+						return (arrItemAoNam.Length <= indexSelect) ? null : arrItemAoNam[indexSelect];
+					case 23:
+						return (arrItemAoNu.Length <= indexSelect) ? null : arrItemAoNu[indexSelect];
+					case 24:
+						return (arrItemGangTayNam.Length <= indexSelect) ? null : arrItemGangTayNam[indexSelect];
+					case 25:
+						return (arrItemGangTayNu.Length <= indexSelect) ? null : arrItemGangTayNu[indexSelect];
+					case 26:
+						return (arrItemQuanNam.Length <= indexSelect) ? null : arrItemQuanNam[indexSelect];
+					case 27:
+						return (arrItemQuanNu.Length <= indexSelect) ? null : arrItemQuanNu[indexSelect];
+					case 28:
+						return (arrItemGiayNam.Length <= indexSelect) ? null : arrItemGiayNam[indexSelect];
+					case 29:
+						return (arrItemGiayNu.Length <= indexSelect) ? null : arrItemGiayNu[indexSelect];
+					case 32:
+						return (arrItemFashion.Length <= indexSelect) ? null : arrItemFashion[indexSelect];
+					case 34:
+						return (arrItemClanShop.Length <= indexSelect) ? null : arrItemClanShop[indexSelect];
+					case 35:
+						return (arrItemElites.Length <= indexSelect) ? null : arrItemElites[indexSelect];
+					case 43:
+						return arrItemUpPeal[indexSelect];
+					case 44:
+						return arrItemSplit[indexSelect];
+					case 45:
+						return arrItemSplit[indexSelect];
+					case 46:
+						return arrItemSplit[indexSelect];
+					case 47:
+						return arrItemUpGrade[indexSelect];
+					case 48:
+						return arrItemSplit[indexSelect];
+					case 51:
+						return (arrItemFashion.Length <= indexSelect) ? null : arrItemFashion[indexSelect];
+					case 12:
+					case 13:
+					case 30:
+					case 31:
+					case 33:
+					case 36:
+					case 37:
+					case 38:
+					case 39:
+					case 40:
+					case 41:
+					case 42:
+					case 49:
+					case 50:
+						break;
 				}
 			}
 			catch (Exception ex)
@@ -15825,30 +15831,30 @@ public class GameScr : mScreen, IChatable, IActionListener
 				mFont.tahoma_7_white.drawString(g, mResources.noti_hiddenquest, xstart + 5, yPaint += 12, 0);
 				switch (typeba)
 				{
-				case 1:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_aggressivepoint, xstart + 5, yPaint += 12, 0);
-					break;
-				case 2:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_cave, xstart + 5, yPaint += 12, 0);
-					break;
-				case 3:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_huntingwildbeast, xstart + 5, yPaint += 12, 0);
-					break;
-				case 4:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_upgrade, xstart + 5, yPaint += 12, 0);
-					break;
-				case 5:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_dailyquest, xstart + 5, yPaint += 12, 0);
-					break;
-				case 6:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_battlefield, xstart + 5, yPaint += 12, 0);
-					break;
-				case 7:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_sevenbeasts, xstart + 5, yPaint += 12, 0);
-					break;
-				case 8:
-					mFont.tahoma_7_white.drawString(g, mResources.noti_luckycard, xstart + 5, yPaint += 12, 0);
-					break;
+					case 1:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_aggressivepoint, xstart + 5, yPaint += 12, 0);
+						break;
+					case 2:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_cave, xstart + 5, yPaint += 12, 0);
+						break;
+					case 3:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_huntingwildbeast, xstart + 5, yPaint += 12, 0);
+						break;
+					case 4:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_upgrade, xstart + 5, yPaint += 12, 0);
+						break;
+					case 5:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_dailyquest, xstart + 5, yPaint += 12, 0);
+						break;
+					case 6:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_battlefield, xstart + 5, yPaint += 12, 0);
+						break;
+					case 7:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_sevenbeasts, xstart + 5, yPaint += 12, 0);
+						break;
+					case 8:
+						mFont.tahoma_7_white.drawString(g, mResources.noti_luckycard, xstart + 5, yPaint += 12, 0);
+						break;
 				}
 			}
 			if (indexTitle == 1 && indexRow >= 0 && indexRowMax > 0)
@@ -16653,155 +16659,45 @@ public class GameScr : mScreen, IChatable, IActionListener
 		}
 		switch (indexMenu)
 		{
-		case 0:
-			if (indexTitle != 1)
-			{
-				break;
-			}
-			if (getItemFocus(3) != null)
-			{
-				left = cmdBagSelectItem;
-				if ((GameCanvas.isTouch && GameCanvas.w < 320) || !GameCanvas.isTouch)
+			case 0:
+				if (indexTitle != 1)
 				{
-					center = cmdBagViewItemInfo;
+					break;
 				}
-			}
-			else
-			{
-				isPaintItemInfo = false;
-				left = cmdBagSortItem;
-			}
-			break;
-		case 1:
-		{
-			if (indexTitle != 1)
-			{
-				break;
-			}
-			left = null;
-			if (indexSelect < 0)
-			{
-				break;
-			}
-			SkillTemplate skillTemplate3 = Char.getMyChar().nClass.skillTemplates[indexSelect];
-			Skill skill3 = Char.getMyChar().getSkill(skillTemplate3);
-			if (skill3 != null)
-			{
-				if (skill3.point < skillTemplate3.maxPoint)
+				if (getItemFocus(3) != null)
 				{
-					left = new Command(mResources.UPPOINT, 14001);
-				}
-				if (skill3.template.type == 1 || skill3.template.type == 4 || skill3.template.type == 2 || skill3.template.type == 3)
-				{
-					center = new Command(mResources.SHORCUT, 11081);
+					left = cmdBagSelectItem;
+					if ((GameCanvas.isTouch && GameCanvas.w < 320) || !GameCanvas.isTouch)
+					{
+						center = cmdBagViewItemInfo;
+					}
 				}
 				else
 				{
-					center = null;
-				}
-			}
-			break;
-		}
-		case 2:
-			if (indexTitle >= 1)
-			{
-				left = new Command(mResources.UPPOINT, 11084);
-				center = new Command(string.Empty, 11084);
-			}
-			break;
-		case 3:
-			left = null;
-			center = new Command(mResources.CHANGE, 110854);
-			break;
-		case 4:
-		{
-			if (indexTitle != 1)
-			{
-				break;
-			}
-			left = null;
-			Item item = getItemFocus(5);
-			if (item != null)
-			{
-				if (currentCharViewInfo.charID == Char.getMyChar().charID)
-				{
-					left = new Command(mResources.SELECT, 11082);
-					if (GameCanvas.isTouchControlLargeScreen)
-					{
-						updateItemInfo(5, item);
-					}
-					else
-					{
-						center = new Command(mResources.VIEW, 11083);
-					}
-				}
-				else if (GameCanvas.isTouchControlLargeScreen)
-				{
-					updateItemInfo(5, item);
-				}
-				else
-				{
-					center = new Command(mResources.VIEW, 11083);
-				}
-			}
-			else
-			{
-				isPaintItemInfo = false;
-				if (!GameCanvas.isTouch && indextabTrangbi > 0)
-				{
-					left = new Command(mResources.tbi1, 2003);
-				}
-			}
-			break;
-		}
-		case 5:
-			left = null;
-			if (indexTitle == 1 && indexSelect >= 0 && currentCharViewInfo.arrItemMounts[indexSelect] != null)
-			{
-				if (Char.getMyChar().charID == currentCharViewInfo.charID)
-				{
-					left = new Command(mResources.MOVEOUT, 1516);
-				}
-				center = new Command((!GameCanvas.isTouchControlLargeScreen) ? mResources.VIEW : string.Empty, 1515);
-			}
-			break;
-		case 6:
-		{
-			if (indexBijuuMenu == 0)
-			{
-				left = null;
-				if (indexTitle == 1 && indexSelect >= 0 && currentCharViewInfo.arrItemMounts[indexSelect] != null)
-				{
-					if (Char.getMyChar().charID == currentCharViewInfo.charID)
-					{
-						left = new Command(mResources.MOVEOUT, 501);
-					}
-					center = new Command((!GameCanvas.isTouchControlLargeScreen) ? mResources.VIEW : string.Empty, 503);
+					isPaintItemInfo = false;
+					left = cmdBagSortItem;
 				}
 				break;
-			}
-			if (indexBijuuMenu == 1)
-			{
-				if (indexTitle >= 1)
+			case 1:
 				{
-					left = new Command(mResources.UPPOINT, 504);
-				}
-				break;
-			}
-			if (indexTitle == 1)
-			{
-				left = null;
-				if (indexSelect >= 0)
-				{
-					SkillTemplate skillTemplate = Char.getMyChar().nClass.skillTemplates[indexSelect];
-					Skill skill = Char.getMyChar().getSkill(skillTemplate);
-					if (skill != null)
+					if (indexTitle != 1)
 					{
-						if (skill.point < skillTemplate.maxPoint)
+						break;
+					}
+					left = null;
+					if (indexSelect < 0)
+					{
+						break;
+					}
+					SkillTemplate skillTemplate3 = Char.getMyChar().nClass.skillTemplates[indexSelect];
+					Skill skill3 = Char.getMyChar().getSkill(skillTemplate3);
+					if (skill3 != null)
+					{
+						if (skill3.point < skillTemplate3.maxPoint)
 						{
 							left = new Command(mResources.UPPOINT, 14001);
 						}
-						if (skill.template.type == 1 || skill.template.type == 4 || skill.template.type == 2 || skill.template.type == 3)
+						if (skill3.template.type == 1 || skill3.template.type == 4 || skill3.template.type == 2 || skill3.template.type == 3)
 						{
 							center = new Command(mResources.SHORCUT, 11081);
 						}
@@ -16810,29 +16706,139 @@ public class GameScr : mScreen, IChatable, IActionListener
 							center = null;
 						}
 					}
+					break;
 				}
-			}
-			if (indexTitle != 1)
-			{
-				break;
-			}
-			left = null;
-			if (indexSelect < 0)
-			{
-				break;
-			}
-			SkillTemplate skillTemplate2 = Char.getMyChar().nClass.skillTemplates[indexSelect];
-			Skill skill2 = Char.getMyChar().getSkill(skillTemplate2);
-			if (skill2 != null)
-			{
-				if (skill2.point < skillTemplate2.maxPoint)
+			case 2:
+				if (indexTitle >= 1)
 				{
-					left = new Command(mResources.UPPOINT, 505);
+					left = new Command(mResources.UPPOINT, 11084);
+					center = new Command(string.Empty, 11084);
 				}
-				center = null;
-			}
-			break;
-		}
+				break;
+			case 3:
+				left = null;
+				center = new Command(mResources.CHANGE, 110854);
+				break;
+			case 4:
+				{
+					if (indexTitle != 1)
+					{
+						break;
+					}
+					left = null;
+					Item item = getItemFocus(5);
+					if (item != null)
+					{
+						if (currentCharViewInfo.charID == Char.getMyChar().charID)
+						{
+							left = new Command(mResources.SELECT, 11082);
+							if (GameCanvas.isTouchControlLargeScreen)
+							{
+								updateItemInfo(5, item);
+							}
+							else
+							{
+								center = new Command(mResources.VIEW, 11083);
+							}
+						}
+						else if (GameCanvas.isTouchControlLargeScreen)
+						{
+							updateItemInfo(5, item);
+						}
+						else
+						{
+							center = new Command(mResources.VIEW, 11083);
+						}
+					}
+					else
+					{
+						isPaintItemInfo = false;
+						if (!GameCanvas.isTouch && indextabTrangbi > 0)
+						{
+							left = new Command(mResources.tbi1, 2003);
+						}
+					}
+					break;
+				}
+			case 5:
+				left = null;
+				if (indexTitle == 1 && indexSelect >= 0 && currentCharViewInfo.arrItemMounts[indexSelect] != null)
+				{
+					if (Char.getMyChar().charID == currentCharViewInfo.charID)
+					{
+						left = new Command(mResources.MOVEOUT, 1516);
+					}
+					center = new Command((!GameCanvas.isTouchControlLargeScreen) ? mResources.VIEW : string.Empty, 1515);
+				}
+				break;
+			case 6:
+				{
+					if (indexBijuuMenu == 0)
+					{
+						left = null;
+						if (indexTitle == 1 && indexSelect >= 0 && currentCharViewInfo.arrItemMounts[indexSelect] != null)
+						{
+							if (Char.getMyChar().charID == currentCharViewInfo.charID)
+							{
+								left = new Command(mResources.MOVEOUT, 501);
+							}
+							center = new Command((!GameCanvas.isTouchControlLargeScreen) ? mResources.VIEW : string.Empty, 503);
+						}
+						break;
+					}
+					if (indexBijuuMenu == 1)
+					{
+						if (indexTitle >= 1)
+						{
+							left = new Command(mResources.UPPOINT, 504);
+						}
+						break;
+					}
+					if (indexTitle == 1)
+					{
+						left = null;
+						if (indexSelect >= 0)
+						{
+							SkillTemplate skillTemplate = Char.getMyChar().nClass.skillTemplates[indexSelect];
+							Skill skill = Char.getMyChar().getSkill(skillTemplate);
+							if (skill != null)
+							{
+								if (skill.point < skillTemplate.maxPoint)
+								{
+									left = new Command(mResources.UPPOINT, 14001);
+								}
+								if (skill.template.type == 1 || skill.template.type == 4 || skill.template.type == 2 || skill.template.type == 3)
+								{
+									center = new Command(mResources.SHORCUT, 11081);
+								}
+								else
+								{
+									center = null;
+								}
+							}
+						}
+					}
+					if (indexTitle != 1)
+					{
+						break;
+					}
+					left = null;
+					if (indexSelect < 0)
+					{
+						break;
+					}
+					SkillTemplate skillTemplate2 = Char.getMyChar().nClass.skillTemplates[indexSelect];
+					Skill skill2 = Char.getMyChar().getSkill(skillTemplate2);
+					if (skill2 != null)
+					{
+						if (skill2.point < skillTemplate2.maxPoint)
+						{
+							left = new Command(mResources.UPPOINT, 505);
+						}
+						center = null;
+					}
+					break;
+				}
 		}
 		if (indexMenu == 6)
 		{
@@ -16858,306 +16864,306 @@ public class GameScr : mScreen, IChatable, IActionListener
 		right = cmdCloseAll;
 		switch (typeUI)
 		{
-		case 2:
-			indexMenu = 0;
-			isPaintWeapon = true;
-			if (arrItemWeapon == null)
-			{
-				Service.gI().requestItem(2);
-			}
-			break;
-		case 4:
-			indexMenu = 0;
-			isPaintBox = true;
-			if (Char.getMyChar().arrItemBox == null)
-			{
-				Service.gI().requestItem(4);
-			}
-			break;
-		case 6:
-			indexMenu = 0;
-			isPaintStack = true;
-			if (arrItemStack == null)
-			{
-				Service.gI().requestItem(6);
-			}
-			break;
-		case 7:
-			indexMenu = 0;
-			isPaintStackLock = true;
-			if (arrItemStackLock == null)
-			{
-				Service.gI().requestItem(7);
-			}
-			break;
-		case 8:
-			indexMenu = 0;
-			isPaintGrocery = true;
-			if (arrItemGrocery == null)
-			{
-				Service.gI().requestItem(8);
-			}
-			break;
-		case 9:
-			indexMenu = 0;
-			isPaintGroceryLock = true;
-			if (arrItemGroceryLock == null)
-			{
-				Service.gI().requestItem(9);
-			}
-			break;
-		case 10:
-			indexMenu = 0;
-			isPaintUpGrade = true;
-			arrItemUpGrade = new Item[18];
-			break;
-		case 11:
-			indexMenu = 0;
-			isPaintUpPearl = true;
-			isTypeXu = true;
-			arrItemUpPeal = new Item[24];
-			break;
-		case 12:
-			indexMenu = 0;
-			isPaintUpPearl = true;
-			isTypeXu = false;
-			arrItemUpPeal = new Item[24];
-			break;
-		case 13:
-			indexMenu = 0;
-			setPopupSize(175, 180);
-			isPaintSplit = true;
-			arrItemSplit = new Item[24];
-			break;
-		case 14:
-			isPaintStore = true;
-			indexMenu = 0;
-			if (arrItemStore == null)
-			{
-				Service.gI().requestItem(14);
-			}
-			break;
-		case 15:
-			isPaintStore = true;
-			indexMenu = 1;
-			if (arrItemBook == null)
-			{
-				Service.gI().requestItem(15);
-			}
-			break;
-		case 16:
-			indexMenu = 0;
-			isPaintLien = true;
-			if (arrItemLien == null)
-			{
-				Service.gI().requestItem(16);
-			}
-			break;
-		case 17:
-			indexMenu = 0;
-			isPaintNhan = true;
-			if (arrItemNhan == null)
-			{
-				Service.gI().requestItem(17);
-			}
-			break;
-		case 18:
-			indexMenu = 0;
-			isPaintNgocBoi = true;
-			if (arrItemNgocBoi == null)
-			{
-				Service.gI().requestItem(18);
-			}
-			break;
-		case 19:
-			indexMenu = 0;
-			isPaintPhu = true;
-			if (arrItemPhu == null)
-			{
-				Service.gI().requestItem(19);
-			}
-			break;
-		case 20:
-			indexMenu = 0;
-			isPaintNonNam = true;
-			if (arrItemNonNam == null)
-			{
-				Service.gI().requestItem(20);
-			}
-			break;
-		case 21:
-			indexMenu = 0;
-			isPaintNonNu = true;
-			if (arrItemNonNu == null)
-			{
-				Service.gI().requestItem(21);
-			}
-			break;
-		case 22:
-			indexMenu = 0;
-			isPaintAoNam = true;
-			if (arrItemAoNam == null)
-			{
-				Service.gI().requestItem(22);
-			}
-			break;
-		case 23:
-			indexMenu = 0;
-			isPaintAoNu = true;
-			if (arrItemAoNu == null)
-			{
-				Service.gI().requestItem(23);
-			}
-			break;
-		case 24:
-			indexMenu = 0;
-			isPaintGangTayNam = true;
-			if (arrItemGangTayNam == null)
-			{
-				Service.gI().requestItem(24);
-			}
-			break;
-		case 25:
-			indexMenu = 0;
-			isPaintGangTayNu = true;
-			if (arrItemGangTayNu == null)
-			{
-				Service.gI().requestItem(25);
-			}
-			break;
-		case 26:
-			indexMenu = 0;
-			isPaintQuanNam = true;
-			if (arrItemQuanNam == null)
-			{
-				Service.gI().requestItem(26);
-			}
-			break;
-		case 27:
-			indexMenu = 0;
-			isPaintQuanNu = true;
-			if (arrItemQuanNu == null)
-			{
-				Service.gI().requestItem(27);
-			}
-			break;
-		case 28:
-			indexMenu = 0;
-			isPaintGiayNam = true;
-			if (arrItemGiayNam == null)
-			{
-				Service.gI().requestItem(28);
-			}
-			break;
-		case 29:
-			indexMenu = 0;
-			isPaintGiayNu = true;
-			if (arrItemGiayNu == null)
-			{
-				Service.gI().requestItem(29);
-			}
-			break;
-		case 31:
-			indexMenu = 0;
-			isPaintUpGrade = true;
-			isPaintUpGradeGold = true;
-			arrItemUpGrade = new Item[18];
-			break;
-		case 32:
-			isPaintStore = true;
-			indexMenu = 2;
-			if (arrItemFashion == null)
-			{
-				Service.gI().requestItem(32);
-			}
-			break;
-		case 33:
-			indexMenu = 0;
-			isPaintConvert = true;
-			arrItemConvert = new Item[3];
-			break;
-		case 34:
-			isPaintStore = true;
-			indexMenu = 3;
-			if (arrItemClanShop == null)
-			{
-				Service.gI().requestItem(34);
-			}
-			break;
-		case 35:
-			isPaintEliteShop = true;
-			indexMenu = 0;
-			if (arrItemElites == null)
-			{
-				Service.gI().requestItem(35);
-			}
-			break;
-		case 36:
-			indexMenu = 0;
-			openItemSaleUI();
-			break;
-		case 37:
-			isPaintAuctionBuy = true;
-			updateCommandForUI();
-			break;
-		case 38:
-			arrItemSprin = null;
-			isPaintLuckySpin = true;
-			indexTitle = 1;
-			updateCommandForUI();
-			break;
-		case 40:
-			isPaintAuto = true;
-			indexTitle = 1;
-			indexRow = 0;
-			updateCommandForUI();
-			break;
-		case 43:
-			indexMenu = 0;
-			isPaintLuyenThach = true;
-			arrItemUpPeal = new Item[24];
-			break;
-		case 44:
-			indexMenu = 0;
-			isPaintTinhluyen = true;
-			arrItemSplit = new Item[24];
-			break;
-		case 45:
-			indexMenu = 0;
-			isPaintDichChuyen = true;
-			arrItemSplit = new Item[24];
-			break;
-		case 46:
-			indexMenu = 0;
-			isPaintLuyenNgoc = true;
-			arrItemSplit = new Item[24];
-			break;
-		case 47:
-			indexMenu = 0;
-			isPaintKhamNgoc = true;
-			arrItemUpGrade = new Item[18];
-			break;
-		case 48:
-			indexMenu = 0;
-			isPaintGiaoDo = true;
-			arrItemSplit = new Item[18];
-			break;
-		case 49:
-			indexMenu = 0;
-			openGotNgocUI();
-			break;
-		case 50:
-			indexMenu = 0;
-			openThaoNgocUI();
-			break;
-		case 51:
-			isPaintStore = true;
-			indexMenu = 51;
-			if (arrItemFashion == null)
-			{
-				Service.gI().requestItem(32);
-			}
-			break;
+			case 2:
+				indexMenu = 0;
+				isPaintWeapon = true;
+				if (arrItemWeapon == null)
+				{
+					Service.gI().requestItem(2);
+				}
+				break;
+			case 4:
+				indexMenu = 0;
+				isPaintBox = true;
+				if (Char.getMyChar().arrItemBox == null)
+				{
+					Service.gI().requestItem(4);
+				}
+				break;
+			case 6:
+				indexMenu = 0;
+				isPaintStack = true;
+				if (arrItemStack == null)
+				{
+					Service.gI().requestItem(6);
+				}
+				break;
+			case 7:
+				indexMenu = 0;
+				isPaintStackLock = true;
+				if (arrItemStackLock == null)
+				{
+					Service.gI().requestItem(7);
+				}
+				break;
+			case 8:
+				indexMenu = 0;
+				isPaintGrocery = true;
+				if (arrItemGrocery == null)
+				{
+					Service.gI().requestItem(8);
+				}
+				break;
+			case 9:
+				indexMenu = 0;
+				isPaintGroceryLock = true;
+				if (arrItemGroceryLock == null)
+				{
+					Service.gI().requestItem(9);
+				}
+				break;
+			case 10:
+				indexMenu = 0;
+				isPaintUpGrade = true;
+				arrItemUpGrade = new Item[18];
+				break;
+			case 11:
+				indexMenu = 0;
+				isPaintUpPearl = true;
+				isTypeXu = true;
+				arrItemUpPeal = new Item[24];
+				break;
+			case 12:
+				indexMenu = 0;
+				isPaintUpPearl = true;
+				isTypeXu = false;
+				arrItemUpPeal = new Item[24];
+				break;
+			case 13:
+				indexMenu = 0;
+				setPopupSize(175, 180);
+				isPaintSplit = true;
+				arrItemSplit = new Item[24];
+				break;
+			case 14:
+				isPaintStore = true;
+				indexMenu = 0;
+				if (arrItemStore == null)
+				{
+					Service.gI().requestItem(14);
+				}
+				break;
+			case 15:
+				isPaintStore = true;
+				indexMenu = 1;
+				if (arrItemBook == null)
+				{
+					Service.gI().requestItem(15);
+				}
+				break;
+			case 16:
+				indexMenu = 0;
+				isPaintLien = true;
+				if (arrItemLien == null)
+				{
+					Service.gI().requestItem(16);
+				}
+				break;
+			case 17:
+				indexMenu = 0;
+				isPaintNhan = true;
+				if (arrItemNhan == null)
+				{
+					Service.gI().requestItem(17);
+				}
+				break;
+			case 18:
+				indexMenu = 0;
+				isPaintNgocBoi = true;
+				if (arrItemNgocBoi == null)
+				{
+					Service.gI().requestItem(18);
+				}
+				break;
+			case 19:
+				indexMenu = 0;
+				isPaintPhu = true;
+				if (arrItemPhu == null)
+				{
+					Service.gI().requestItem(19);
+				}
+				break;
+			case 20:
+				indexMenu = 0;
+				isPaintNonNam = true;
+				if (arrItemNonNam == null)
+				{
+					Service.gI().requestItem(20);
+				}
+				break;
+			case 21:
+				indexMenu = 0;
+				isPaintNonNu = true;
+				if (arrItemNonNu == null)
+				{
+					Service.gI().requestItem(21);
+				}
+				break;
+			case 22:
+				indexMenu = 0;
+				isPaintAoNam = true;
+				if (arrItemAoNam == null)
+				{
+					Service.gI().requestItem(22);
+				}
+				break;
+			case 23:
+				indexMenu = 0;
+				isPaintAoNu = true;
+				if (arrItemAoNu == null)
+				{
+					Service.gI().requestItem(23);
+				}
+				break;
+			case 24:
+				indexMenu = 0;
+				isPaintGangTayNam = true;
+				if (arrItemGangTayNam == null)
+				{
+					Service.gI().requestItem(24);
+				}
+				break;
+			case 25:
+				indexMenu = 0;
+				isPaintGangTayNu = true;
+				if (arrItemGangTayNu == null)
+				{
+					Service.gI().requestItem(25);
+				}
+				break;
+			case 26:
+				indexMenu = 0;
+				isPaintQuanNam = true;
+				if (arrItemQuanNam == null)
+				{
+					Service.gI().requestItem(26);
+				}
+				break;
+			case 27:
+				indexMenu = 0;
+				isPaintQuanNu = true;
+				if (arrItemQuanNu == null)
+				{
+					Service.gI().requestItem(27);
+				}
+				break;
+			case 28:
+				indexMenu = 0;
+				isPaintGiayNam = true;
+				if (arrItemGiayNam == null)
+				{
+					Service.gI().requestItem(28);
+				}
+				break;
+			case 29:
+				indexMenu = 0;
+				isPaintGiayNu = true;
+				if (arrItemGiayNu == null)
+				{
+					Service.gI().requestItem(29);
+				}
+				break;
+			case 31:
+				indexMenu = 0;
+				isPaintUpGrade = true;
+				isPaintUpGradeGold = true;
+				arrItemUpGrade = new Item[18];
+				break;
+			case 32:
+				isPaintStore = true;
+				indexMenu = 2;
+				if (arrItemFashion == null)
+				{
+					Service.gI().requestItem(32);
+				}
+				break;
+			case 33:
+				indexMenu = 0;
+				isPaintConvert = true;
+				arrItemConvert = new Item[3];
+				break;
+			case 34:
+				isPaintStore = true;
+				indexMenu = 3;
+				if (arrItemClanShop == null)
+				{
+					Service.gI().requestItem(34);
+				}
+				break;
+			case 35:
+				isPaintEliteShop = true;
+				indexMenu = 0;
+				if (arrItemElites == null)
+				{
+					Service.gI().requestItem(35);
+				}
+				break;
+			case 36:
+				indexMenu = 0;
+				openItemSaleUI();
+				break;
+			case 37:
+				isPaintAuctionBuy = true;
+				updateCommandForUI();
+				break;
+			case 38:
+				arrItemSprin = null;
+				isPaintLuckySpin = true;
+				indexTitle = 1;
+				updateCommandForUI();
+				break;
+			case 40:
+				isPaintAuto = true;
+				indexTitle = 1;
+				indexRow = 0;
+				updateCommandForUI();
+				break;
+			case 43:
+				indexMenu = 0;
+				isPaintLuyenThach = true;
+				arrItemUpPeal = new Item[24];
+				break;
+			case 44:
+				indexMenu = 0;
+				isPaintTinhluyen = true;
+				arrItemSplit = new Item[24];
+				break;
+			case 45:
+				indexMenu = 0;
+				isPaintDichChuyen = true;
+				arrItemSplit = new Item[24];
+				break;
+			case 46:
+				indexMenu = 0;
+				isPaintLuyenNgoc = true;
+				arrItemSplit = new Item[24];
+				break;
+			case 47:
+				indexMenu = 0;
+				isPaintKhamNgoc = true;
+				arrItemUpGrade = new Item[18];
+				break;
+			case 48:
+				indexMenu = 0;
+				isPaintGiaoDo = true;
+				arrItemSplit = new Item[18];
+				break;
+			case 49:
+				indexMenu = 0;
+				openGotNgocUI();
+				break;
+			case 50:
+				indexMenu = 0;
+				openThaoNgocUI();
+				break;
+			case 51:
+				isPaintStore = true;
+				indexMenu = 51;
+				if (arrItemFashion == null)
+				{
+					Service.gI().requestItem(32);
+				}
+				break;
 		}
 		setPopupSize(175, 200);
 	}
@@ -17440,1727 +17446,1727 @@ public class GameScr : mScreen, IChatable, IActionListener
 		string empty = string.Empty;
 		switch (idAction)
 		{
-		case 1:
-			GameCanvas.endDlg();
-			break;
-		case 2:
-			GameCanvas.endDlg();
-			left = (center = null);
-			updateCommandForUI();
-			break;
-		case 3:
-			doCloseAlert();
-			break;
-		case 222:
-			actSplitItemBag_luyenngoc();
-			break;
-		case 333:
-			doOpenUI(47);
-			break;
-		case 334:
-			actUpgrade_HanhTrang();
-			break;
-		case 335:
-			isViewNext = false;
-			updateItemInfo(3, itemSplit);
-			break;
-		case 336:
-			isViewNext = false;
-			updateItemInfo(3, itemUpGrade);
-			break;
-		case 337:
-			act_update_khamngoc();
-			break;
-		case 338:
-			setCMD_act_KhamNgoc(0);
-			break;
-		case 339:
-			actKhamNgocMoveOut(0);
-			break;
-		case 340:
-			actKhamNgocMoveOut(1);
-			break;
-		case 341:
-			khamngoc();
-			break;
-		case 342:
-			actConfirmKhamNgoc();
-			break;
-		case 343:
-			actKhamNgocMoveOut(2);
-			break;
-		case 344:
-			setCMD_act_KhamNgoc(1);
-			break;
-		case 345:
-			setCMD_act_KhamNgoc(2);
-			break;
-		case 400:
-			act_update_giaodo();
-			break;
-		case 401:
-			setCMD_act_GiaoDo();
-			break;
-		case 402:
-			actGiaoDoMoveOut();
-			break;
-		case 403:
-			sendGiaoDo();
-			break;
-		case 405:
-			actSplitItemBag_gotngoc();
-			break;
-		case 500:
-			actBijuuSelect();
-			break;
-		case 501:
-			Service.gI().itemMonToBag(indexSelect);
-			break;
-		case 502:
-			doBiJuu();
-			break;
-		case 503:
-			updateItemInfo(41, currentCharViewInfo.arrItemMounts[indexSelect]);
-			break;
-		case 504:
-			actBijuuMenuPoint();
-			break;
-		case 505:
-			actBijuuKyNang();
-			break;
-		case 999:
-			doOpenUI(35);
-			break;
-		case 1000:
-			Service.gI().rewardPB();
-			resetButton();
-			break;
-		case 1500:
-		{
-			MyVector myVector4 = new MyVector();
-			myVector4.addElement(new Command(mResources.MOVEOUT, 15001));
-			if (Char.getMyChar().xu >= 1000)
-			{
-				myVector4.addElement(new Command(mResources.SALE, 15002));
-			}
-			GameCanvas.menu.startAt(myVector4, 1);
-			break;
-		}
-		case 1501:
-			updateItemInfo(3, itemSell);
-			break;
-		case 1502:
-			tfText.isFocus = true;
-			break;
-		case 1503:
-			doBagToStand();
-			break;
-		case 1504:
-			domenuItemStand();
-			break;
-		case 1505:
-			updateItemInfo(3, arrItemStands[indexSelect].item);
-			break;
-		case 1506:
-			if (arrItemSprin != null)
-			{
-				yenTemp = 0;
-				isPaintItemInfo = false;
-				indexCard = -1;
-				arrItemSprin = null;
-				gI().left = new Command(mResources.SELECT, 1506);
-			}
-			else
-			{
-				indexCard = indexSelect;
-				Service.gI().selectCard();
-				GameCanvas.startWaitDlgWithoutCancel();
-			}
-			break;
-		case 1507:
-			doviewCardsInfo();
-			break;
-		case 1508:
-		{
-			MyVector myVector3 = new MyVector();
-			if (Char.clan.items[indexSelect].template.id == 281)
-			{
-				myVector3.addElement(new Command(mResources.USE, 15081));
-			}
-			else
-			{
-				myVector3.addElement(new Command(mResources.CLAN_BOX, 15082));
-			}
-			GameCanvas.menu.startAt(myVector3, 0);
-			break;
-		}
-		case 1509:
-			if (indexSelect >= 0 && Char.clan != null)
-			{
-				updateItemInfo(39, Char.clan.items[indexSelect]);
-			}
-			else
-			{
-				isPaintItemInfo = false;
-			}
-			break;
-		case 1510:
-			doAutoSelect();
-			break;
-		case 1511:
-			empty = GameCanvas.inputDlg.tfInput.getText();
-			GameCanvas.endDlg();
-			try
-			{
-				if (empty.Equals(string.Empty))
+			case 1:
+				GameCanvas.endDlg();
+				break;
+			case 2:
+				GameCanvas.endDlg();
+				left = (center = null);
+				updateCommandForUI();
+				break;
+			case 3:
+				doCloseAlert();
+				break;
+			case 222:
+				actSplitItemBag_luyenngoc();
+				break;
+			case 333:
+				doOpenUI(47);
+				break;
+			case 334:
+				actUpgrade_HanhTrang();
+				break;
+			case 335:
+				isViewNext = false;
+				updateItemInfo(3, itemSplit);
+				break;
+			case 336:
+				isViewNext = false;
+				updateItemInfo(3, itemUpGrade);
+				break;
+			case 337:
+				act_update_khamngoc();
+				break;
+			case 338:
+				setCMD_act_KhamNgoc(0);
+				break;
+			case 339:
+				actKhamNgocMoveOut(0);
+				break;
+			case 340:
+				actKhamNgocMoveOut(1);
+				break;
+			case 341:
+				khamngoc();
+				break;
+			case 342:
+				actConfirmKhamNgoc();
+				break;
+			case 343:
+				actKhamNgocMoveOut(2);
+				break;
+			case 344:
+				setCMD_act_KhamNgoc(1);
+				break;
+			case 345:
+				setCMD_act_KhamNgoc(2);
+				break;
+			case 400:
+				act_update_giaodo();
+				break;
+			case 401:
+				setCMD_act_GiaoDo();
+				break;
+			case 402:
+				actGiaoDoMoveOut();
+				break;
+			case 403:
+				sendGiaoDo();
+				break;
+			case 405:
+				actSplitItemBag_gotngoc();
+				break;
+			case 500:
+				actBijuuSelect();
+				break;
+			case 501:
+				Service.gI().itemMonToBag(indexSelect);
+				break;
+			case 502:
+				doBiJuu();
+				break;
+			case 503:
+				updateItemInfo(41, currentCharViewInfo.arrItemMounts[indexSelect]);
+				break;
+			case 504:
+				actBijuuMenuPoint();
+				break;
+			case 505:
+				actBijuuKyNang();
+				break;
+			case 999:
+				doOpenUI(35);
+				break;
+			case 1000:
+				Service.gI().rewardPB();
+				resetButton();
+				break;
+			case 1500:
+				{
+					MyVector myVector4 = new MyVector();
+					myVector4.addElement(new Command(mResources.MOVEOUT, 15001));
+					if (Char.getMyChar().xu >= 1000)
+					{
+						myVector4.addElement(new Command(mResources.SALE, 15002));
+					}
+					GameCanvas.menu.startAt(myVector4, 1);
+					break;
+				}
+			case 1501:
+				updateItemInfo(3, itemSell);
+				break;
+			case 1502:
+				tfText.isFocus = true;
+				break;
+			case 1503:
+				doBagToStand();
+				break;
+			case 1504:
+				domenuItemStand();
+				break;
+			case 1505:
+				updateItemInfo(3, arrItemStands[indexSelect].item);
+				break;
+			case 1506:
+				if (arrItemSprin != null)
+				{
+					yenTemp = 0;
+					isPaintItemInfo = false;
+					indexCard = -1;
+					arrItemSprin = null;
+					gI().left = new Command(mResources.SELECT, 1506);
+				}
+				else
+				{
+					indexCard = indexSelect;
+					Service.gI().selectCard();
+					GameCanvas.startWaitDlgWithoutCancel();
+				}
+				break;
+			case 1507:
+				doviewCardsInfo();
+				break;
+			case 1508:
+				{
+					MyVector myVector3 = new MyVector();
+					if (Char.clan.items[indexSelect].template.id == 281)
+					{
+						myVector3.addElement(new Command(mResources.USE, 15081));
+					}
+					else
+					{
+						myVector3.addElement(new Command(mResources.CLAN_BOX, 15082));
+					}
+					GameCanvas.menu.startAt(myVector3, 0);
+					break;
+				}
+			case 1509:
+				if (indexSelect >= 0 && Char.clan != null)
+				{
+					updateItemInfo(39, Char.clan.items[indexSelect]);
+				}
+				else
+				{
+					isPaintItemInfo = false;
+				}
+				break;
+			case 1510:
+				doAutoSelect();
+				break;
+			case 1511:
+				empty = GameCanvas.inputDlg.tfInput.getText();
+				GameCanvas.endDlg();
+				try
+				{
+					if (empty.Equals(string.Empty))
+					{
+						GameCanvas.startOKDlg(mResources.INVALID_NUM);
+						break;
+					}
+					int num2 = int.Parse(empty);
+					if (num2 < 10 || num2 > 90)
+					{
+						GameCanvas.startOKDlg(mResources.INVALID_NUM);
+					}
+					else
+					{
+						Char.aHpValue = num2;
+					}
+					break;
+				}
+				catch (Exception)
 				{
 					GameCanvas.startOKDlg(mResources.INVALID_NUM);
 					break;
 				}
-				int num2 = int.Parse(empty);
-				if (num2 < 10 || num2 > 90)
-				{
-					GameCanvas.startOKDlg(mResources.INVALID_NUM);
-				}
-				else
-				{
-					Char.aHpValue = num2;
-				}
+			case 1515:
+				updateItemInfo(41, currentCharViewInfo.arrItemMounts[indexSelect]);
 				break;
-			}
-			catch (Exception)
-			{
-				GameCanvas.startOKDlg(mResources.INVALID_NUM);
+			case 1600:
+				doLuyenThach();
 				break;
-			}
-		case 1515:
-			updateItemInfo(41, currentCharViewInfo.arrItemMounts[indexSelect]);
-			break;
-		case 1600:
-			doLuyenThach();
-			break;
-		case 1601:
-			actLuyenThachSelect();
-			break;
-		case 1602:
-		{
-			Item item = getItemFocus(43);
-			updateItemInfo(3, item);
-			break;
-		}
-		case 1603:
-			actgetLuyenThachItems();
-			break;
-		case 1604:
-		{
-			MyVector myVector2 = new MyVector();
-			if (arrItemSplit[indexSelect] != null)
-			{
-				myVector2.addElement(new Command(mResources.MOVEOUT, 1605));
-			}
-			myVector2.addElement(new Command(mResources.BEGIN, 11105));
-			GameCanvas.menu.startAt(myVector2, 0);
-			break;
-		}
-		case 1605:
-			actTinhLuyenMoveOut();
-			break;
-		case 1606:
-			actDichChuyenTrangBiLeft();
-			break;
-		case 1700:
-			luckyDraw_refresh();
-			break;
-		case 1701:
-			luckyDraw_Tf();
-			break;
-		case 1702:
-			doCloseLucky_Draw();
-			break;
-		case 1512:
-			empty = GameCanvas.inputDlg.tfInput.getText();
-			GameCanvas.endDlg();
-			try
-			{
-				if (empty.Equals(string.Empty))
+			case 1601:
+				actLuyenThachSelect();
+				break;
+			case 1602:
+				{
+					Item item = getItemFocus(43);
+					updateItemInfo(3, item);
+					break;
+				}
+			case 1603:
+				actgetLuyenThachItems();
+				break;
+			case 1604:
+				{
+					MyVector myVector2 = new MyVector();
+					if (arrItemSplit[indexSelect] != null)
+					{
+						myVector2.addElement(new Command(mResources.MOVEOUT, 1605));
+					}
+					myVector2.addElement(new Command(mResources.BEGIN, 11105));
+					GameCanvas.menu.startAt(myVector2, 0);
+					break;
+				}
+			case 1605:
+				actTinhLuyenMoveOut();
+				break;
+			case 1606:
+				actDichChuyenTrangBiLeft();
+				break;
+			case 1700:
+				luckyDraw_refresh();
+				break;
+			case 1701:
+				luckyDraw_Tf();
+				break;
+			case 1702:
+				doCloseLucky_Draw();
+				break;
+			case 1512:
+				empty = GameCanvas.inputDlg.tfInput.getText();
+				GameCanvas.endDlg();
+				try
+				{
+					if (empty.Equals(string.Empty))
+					{
+						GameCanvas.startOKDlg(mResources.INVALID_NUM);
+						break;
+					}
+					int num = int.Parse(empty);
+					if (num < 10 || num > 90)
+					{
+						GameCanvas.startOKDlg(mResources.INVALID_NUM);
+					}
+					else
+					{
+						Char.aMpValue = num;
+					}
+					break;
+				}
+				catch (Exception)
 				{
 					GameCanvas.startOKDlg(mResources.INVALID_NUM);
 					break;
 				}
-				int num = int.Parse(empty);
-				if (num < 10 || num > 90)
+			case 1516:
+				Service.gI().itemMonToBag(indexSelect);
+				break;
+			case 2000:
+				Service.gI().rewardCT();
+				resetButton();
+				break;
+			case 2001:
+				Service.gI().throwItem(indexSelect);
+				break;
+			case 2002:
+				GameCanvas.endDlg();
+				break;
+			case 2003:
+				if (indextabTrangbi == 0)
 				{
-					GameCanvas.startOKDlg(mResources.INVALID_NUM);
+					indextabTrangbi = 16;
+					cmdTrangbi2.caption = mResources.tbi1;
+					break;
+				}
+				indextabTrangbi = 0;
+				cmdTrangbi2.caption = mResources.tbi2;
+				if (!GameCanvas.isTouch)
+				{
+					left = new Command(mResources.SELECT, 11082);
+				}
+				break;
+			case 5021:
+				doBiJuu_Point();
+				break;
+			case 5022:
+				doBiJuu_Skill();
+				break;
+			case 5041:
+				Service.gI().upPotential(indexTitle - 1, 1);
+				setLCR();
+				break;
+			case 5042:
+				doBijuuUpPoint();
+				break;
+			case 5043:
+				actBijuuUpPoint();
+				break;
+			case 5051:
+				Service.gI().upSkill(Char.getMyChar().nClass.skillTemplates[indexSelect].id, 1);
+				setLCR();
+				break;
+			case 5052:
+				doBijuuUpSkill();
+				break;
+			case 5053:
+				actBijSkillUpPoint();
+				break;
+			case 11000:
+				actMenu();
+				break;
+			case 11001:
+				Char.getMyChar().findNextFocusByKey();
+				break;
+			case 11002:
+				actAddFriendAccept();
+				break;
+			case 11003:
+				actSkillUpPoint();
+				break;
+			case 11004:
+				actView(25);
+				break;
+			case 11005:
+				actGangTayNuBuy();
+				break;
+			case 11006:
+				actAddPotential();
+				break;
+			case 11007:
+				actView(24);
+				break;
+			case 11008:
+				actGangTayNamBuy();
+				break;
+			case 11009:
+				actView(23);
+				break;
+			case 11010:
+				actAoNuBuy();
+				break;
+			case 11011:
+				actView(22);
+				break;
+			case 11012:
+				actAoNamBuy();
+				break;
+			case 11013:
+				actView(21);
+				break;
+			case 11014:
+				actNonNuBuy();
+				break;
+			case 11015:
+				actView(20);
+				break;
+			case 11016:
+				actNonNamBuy();
+				break;
+			case 11017:
+				actView(15);
+				break;
+			case 11018:
+				actStoreLockBuy();
+				break;
+			case 11019:
+				actView(14);
+				break;
+			case 11020:
+				actStoreBuy();
+				break;
+			case 11021:
+				svTitle = string.Empty;
+				svAction = string.Empty;
+				resetButton();
+				break;
+			case 11022:
+				actBagSelectItem();
+				break;
+			case 11023:
+				actBagViewItemInfo();
+				break;
+			case 11024:
+				actBagThrowItem();
+				break;
+			case 11025:
+				doCloseItemInfo();
+				break;
+			case 11026:
+				actBagUseItem();
+				break;
+			case 11027:
+				actTradeSelectInList();
+				break;
+			case 11028:
+				actTradeSelectInBag();
+				break;
+			case 11029:
+				actTradeSelectItem();
+				break;
+			case 11030:
+				actTradeViewItemInfo();
+				break;
+			case 11032:
+				actTradeLock();
+				break;
+			case 11033:
+				actTradeAccept();
+				break;
+			case 11034:
+				actUpgradeMoveOut();
+				break;
+			case 11035:
+				actSplitMoveOut();
+				break;
+			case 11036:
+				actionCoinTrade();
+				break;
+			case 11037:
+				actTradeMoveOut();
+				break;
+			case 11038:
+				actDead();
+				GameCanvas.isPointerJustRelease = false;
+				break;
+			case 11040:
+				actleftItemInfo();
+				break;
+			case 11041:
+				actrightItemInfo();
+				break;
+			case 11042:
+				actCoinOut();
+				break;
+			case 11043:
+				actCoinIn();
+				break;
+			case 11044:
+				domenuFriendLeft();
+				break;
+			case 11045:
+				domenuFindTeam();
+				break;
+			case 11046:
+				domenuFindTeamCenter();
+				break;
+			case 11047:
+				domenuTeamLeft();
+				break;
+			case 11048:
+				actBoxSort();
+				break;
+			case 11049:
+				actionCoinOut();
+				break;
+			case 11050:
+				actionCoinIn();
+				break;
+			case 11051:
+				actUseItem();
+				break;
+			case 11052:
+				{
+					Item item18 = (Item)p;
+					Service.gI().useItemChangeMap(item18.indexUI, GameCanvas.menu.menuSelectedItem);
+					break;
+				}
+			case 11053:
+				{
+					Item itemBag = (Item)p;
+					doItemChangeMap(itemBag);
+					break;
+				}
+			case 11054:
+				doOpenUIZone();
+				break;
+			case 11055:
+				{
+					Item item17 = (Item)p;
+					doActionBuy(item17);
+					break;
+				}
+			case 11057:
+				{
+					Npc npc3 = (Npc)p;
+					Service.gI().getTask(npc3.template.npcTemplateId, GameCanvas.menu.menuSelectedItem, -1);
+					break;
+				}
+			case 11058:
+				{
+					Item item16 = (Item)p;
+					GameCanvas.endDlg();
+					Service.gI().saleItem(item16.indexUI, int.Parse(GameCanvas.inputDlg.tfInput.getText()));
+					break;
+				}
+			case 11059:
+				actdoChooseSkill();
+				break;
+			case 11060:
+				actdoMiniInfo();
+				break;
+			case 11061:
+				{
+					Item item15 = (Item)p;
+					actSaleConfirm(item15);
+					break;
+				}
+			case 11062:
+				upPearl();
+				break;
+			case 11063:
+				actConfirmUpgrade();
+				break;
+			case 11064:
+				Service.gI().upPotential(indexTitle - 1, 1);
+				setLCR();
+				break;
+			case 11065:
+				doUpPotential();
+				break;
+			case 11066:
+				doCloseAlert();
+				isPaintMessage = false;
+				isMessageMenu = false;
+				ChatTextField.gI().center = null;
+				break;
+			case 11067:
+				if (TileMap.zoneID != indexSelect)
+				{
+					Service.gI().requestChangeZone(indexSelect, indexItemUse);
 				}
 				else
 				{
-					Char.aMpValue = num;
+					InfoMe.addInfo(mResources.ZONE_HERE);
 				}
 				break;
-			}
-			catch (Exception)
-			{
-				GameCanvas.startOKDlg(mResources.INVALID_NUM);
-				break;
-			}
-		case 1516:
-			Service.gI().itemMonToBag(indexSelect);
-			break;
-		case 2000:
-			Service.gI().rewardCT();
-			resetButton();
-			break;
-		case 2001:
-			Service.gI().throwItem(indexSelect);
-			break;
-		case 2002:
-			GameCanvas.endDlg();
-			break;
-		case 2003:
-			if (indextabTrangbi == 0)
-			{
-				indextabTrangbi = 16;
-				cmdTrangbi2.caption = mResources.tbi1;
-				break;
-			}
-			indextabTrangbi = 0;
-			cmdTrangbi2.caption = mResources.tbi2;
-			if (!GameCanvas.isTouch)
-			{
-				left = new Command(mResources.SELECT, 11082);
-			}
-			break;
-		case 5021:
-			doBiJuu_Point();
-			break;
-		case 5022:
-			doBiJuu_Skill();
-			break;
-		case 5041:
-			Service.gI().upPotential(indexTitle - 1, 1);
-			setLCR();
-			break;
-		case 5042:
-			doBijuuUpPoint();
-			break;
-		case 5043:
-			actBijuuUpPoint();
-			break;
-		case 5051:
-			Service.gI().upSkill(Char.getMyChar().nClass.skillTemplates[indexSelect].id, 1);
-			setLCR();
-			break;
-		case 5052:
-			doBijuuUpSkill();
-			break;
-		case 5053:
-			actBijSkillUpPoint();
-			break;
-		case 11000:
-			actMenu();
-			break;
-		case 11001:
-			Char.getMyChar().findNextFocusByKey();
-			break;
-		case 11002:
-			actAddFriendAccept();
-			break;
-		case 11003:
-			actSkillUpPoint();
-			break;
-		case 11004:
-			actView(25);
-			break;
-		case 11005:
-			actGangTayNuBuy();
-			break;
-		case 11006:
-			actAddPotential();
-			break;
-		case 11007:
-			actView(24);
-			break;
-		case 11008:
-			actGangTayNamBuy();
-			break;
-		case 11009:
-			actView(23);
-			break;
-		case 11010:
-			actAoNuBuy();
-			break;
-		case 11011:
-			actView(22);
-			break;
-		case 11012:
-			actAoNamBuy();
-			break;
-		case 11013:
-			actView(21);
-			break;
-		case 11014:
-			actNonNuBuy();
-			break;
-		case 11015:
-			actView(20);
-			break;
-		case 11016:
-			actNonNamBuy();
-			break;
-		case 11017:
-			actView(15);
-			break;
-		case 11018:
-			actStoreLockBuy();
-			break;
-		case 11019:
-			actView(14);
-			break;
-		case 11020:
-			actStoreBuy();
-			break;
-		case 11021:
-			svTitle = string.Empty;
-			svAction = string.Empty;
-			resetButton();
-			break;
-		case 11022:
-			actBagSelectItem();
-			break;
-		case 11023:
-			actBagViewItemInfo();
-			break;
-		case 11024:
-			actBagThrowItem();
-			break;
-		case 11025:
-			doCloseItemInfo();
-			break;
-		case 11026:
-			actBagUseItem();
-			break;
-		case 11027:
-			actTradeSelectInList();
-			break;
-		case 11028:
-			actTradeSelectInBag();
-			break;
-		case 11029:
-			actTradeSelectItem();
-			break;
-		case 11030:
-			actTradeViewItemInfo();
-			break;
-		case 11032:
-			actTradeLock();
-			break;
-		case 11033:
-			actTradeAccept();
-			break;
-		case 11034:
-			actUpgradeMoveOut();
-			break;
-		case 11035:
-			actSplitMoveOut();
-			break;
-		case 11036:
-			actionCoinTrade();
-			break;
-		case 11037:
-			actTradeMoveOut();
-			break;
-		case 11038:
-			actDead();
-			GameCanvas.isPointerJustRelease = false;
-			break;
-		case 11040:
-			actleftItemInfo();
-			break;
-		case 11041:
-			actrightItemInfo();
-			break;
-		case 11042:
-			actCoinOut();
-			break;
-		case 11043:
-			actCoinIn();
-			break;
-		case 11044:
-			domenuFriendLeft();
-			break;
-		case 11045:
-			domenuFindTeam();
-			break;
-		case 11046:
-			domenuFindTeamCenter();
-			break;
-		case 11047:
-			domenuTeamLeft();
-			break;
-		case 11048:
-			actBoxSort();
-			break;
-		case 11049:
-			actionCoinOut();
-			break;
-		case 11050:
-			actionCoinIn();
-			break;
-		case 11051:
-			actUseItem();
-			break;
-		case 11052:
-		{
-			Item item18 = (Item)p;
-			Service.gI().useItemChangeMap(item18.indexUI, GameCanvas.menu.menuSelectedItem);
-			break;
-		}
-		case 11053:
-		{
-			Item itemBag = (Item)p;
-			doItemChangeMap(itemBag);
-			break;
-		}
-		case 11054:
-			doOpenUIZone();
-			break;
-		case 11055:
-		{
-			Item item17 = (Item)p;
-			doActionBuy(item17);
-			break;
-		}
-		case 11057:
-		{
-			Npc npc3 = (Npc)p;
-			Service.gI().getTask(npc3.template.npcTemplateId, GameCanvas.menu.menuSelectedItem, -1);
-			break;
-		}
-		case 11058:
-		{
-			Item item16 = (Item)p;
-			GameCanvas.endDlg();
-			Service.gI().saleItem(item16.indexUI, int.Parse(GameCanvas.inputDlg.tfInput.getText()));
-			break;
-		}
-		case 11059:
-			actdoChooseSkill();
-			break;
-		case 11060:
-			actdoMiniInfo();
-			break;
-		case 11061:
-		{
-			Item item15 = (Item)p;
-			actSaleConfirm(item15);
-			break;
-		}
-		case 11062:
-			upPearl();
-			break;
-		case 11063:
-			actConfirmUpgrade();
-			break;
-		case 11064:
-			Service.gI().upPotential(indexTitle - 1, 1);
-			setLCR();
-			break;
-		case 11065:
-			doUpPotential();
-			break;
-		case 11066:
-			doCloseAlert();
-			isPaintMessage = false;
-			isMessageMenu = false;
-			ChatTextField.gI().center = null;
-			break;
-		case 11067:
-			if (TileMap.zoneID != indexSelect)
-			{
-				Service.gI().requestChangeZone(indexSelect, indexItemUse);
-			}
-			else
-			{
-				InfoMe.addInfo(mResources.ZONE_HERE);
-			}
-			break;
-		case 11068:
-			empty = (string)p;
-			actOpenWeb(empty);
-			break;
-		case 11069:
-			actOpenWebCancel();
-			break;
-		case 11070:
-		{
-			Party pt = (Party)p;
-			actRefresh_TeamLeader(pt);
-			break;
-		}
-		case 11071:
-			Service.gI().outParty();
-			break;
-		case 11072:
-			actSaleItem();
-			break;
-		case 11073:
-			actionSale(Char.getMyChar().arrItemBag[indexSelect]);
-			break;
-		case 11074:
-		{
-			MyVector myVector6 = (MyVector)p;
-			string empty2 = string.Empty;
-			short port = short.Parse(empty2 + myVector6.elementAt(0));
-			string syntax = string.Empty + myVector6.elementAt(1);
-			actSendSMSLeft(port, syntax);
-			break;
-		}
-		case 11075:
-			actSendSMSRight();
-			break;
-		case 11076:
-			empty = (string)p;
-			Service.gI().addParty(empty);
-			break;
-		case 11077:
-			empty = (string)p;
-			actConfirmRemoveFriend(empty);
-			break;
-		case 11078:
-			actSetEnemiesCommand();
-			break;
-		case 11079:
-			actSetFriendCommand();
-			break;
-		case 11080:
-			empty = (string)p;
-			actSetPartyCommand(empty);
-			break;
-		case 11081:
-			actdoGan();
-			break;
-		case 11082:
-			actTrangBiSelect();
-			break;
-		case 11083:
-			actView(5);
-			break;
-		case 11084:
-			actdoUpPoint();
-			break;
-		case 11085:
-		{
-			Item item14 = (Item)p;
-			actBuyQuanNam(item14);
-			break;
-		}
-		case 11086:
-			actTrangBiRight();
-			break;
-		case 11087:
-		{
-			Item item13 = (Item)p;
-			GameCanvas.endDlg();
-			Service.gI().splitItem(item13);
-			break;
-		}
-		case 11088:
-			actView(26);
-			break;
-		case 11089:
-			actView(27);
-			break;
-		case 11090:
-			actView(28);
-			break;
-		case 11091:
-			actView(29);
-			break;
-		case 11092:
-		{
-			Item itemBuy = (Item)p;
-			actBuyLeft(itemBuy);
-			break;
-		}
-		case 11093:
-			actView(2);
-			break;
-		case 11094:
-			actView(6);
-			break;
-		case 11095:
-			actView(7);
-			break;
-		case 11096:
-			actView(8);
-			break;
-		case 11097:
-			actView(9);
-			break;
-		case 11098:
-			actUpgradeLeft();
-			break;
-		case 11099:
-			isViewNext = false;
-			updateItemInfo(3, itemUpGrade);
-			break;
-		case 11100:
-			actUpgradeBag();
-			break;
-		case 11101:
-		{
-			Item item12 = getItemFocus(10);
-			updateItemInfo(3, item12);
-			break;
-		}
-		case 11102:
-			actUpgrade_HanhTrang();
-			break;
-		case 11103:
-			actSplitItem();
-			break;
-		case 11104:
-			updateItemInfo(3, (Item)p);
-			break;
-		case 11105:
-			split();
-			break;
-		case 11106:
-			actSplitItemBag();
-			break;
-		case 11107:
-			actUpPearlSelect();
-			break;
-		case 11108:
-			actView(3);
-			break;
-		case 11109:
-			actUpPearlItems();
-			break;
-		case 11110:
-		{
-			Item item11 = arrItemTradeOrder[indexSelect];
-			updateItemInfo(30, item11);
-			break;
-		}
-		case 11111:
-		{
-			Item item10 = getItemFocus(4);
-			updateItemInfo(4, item10);
-			break;
-		}
-		case 11112:
-			Service.gI().boxSort();
-			break;
-		case 11113:
-			Service.gI().itemBagToBox(Char.getMyChar().arrItemBag[indexSelect].indexUI);
-			break;
-		case 11114:
-			updateItemInfo(3, Char.getMyChar().arrItemBag[indexSelect]);
-			break;
-		case 11115:
-			actBuyItemUILeft();
-			break;
-		case 11116:
-			actBuyItemLeft2();
-			break;
-		case 11120:
-		{
-			object[] obj2 = (object[])p;
-			Skill skill2 = (Skill)obj2[0];
-			int num5 = int.Parse((string)obj2[1]);
-			onScreenSkill[num5] = skill2;
-			saveOnScreenSkillToRMS();
-			break;
-		}
-		case 11121:
-		{
-			object[] obj = (object[])p;
-			Skill skill = (Skill)obj[0];
-			int num4 = int.Parse((string)obj[1]);
-			keySkill[num4] = skill;
-			saveKeySkillToRMS();
-			break;
-		}
-		case 12000:
-			actOpenAlertURL();
-			break;
-		case 12001:
-			ChatManager.gI().switchToTab((int)p);
-			openUIChatTab();
-			break;
-		case 12002:
-		case 12004:
-		{
-			empty = (string)p;
-			ChatTab chatTab = ChatManager.gI().findTab(empty);
-			if (chatTab == null)
-			{
-				ChatManager.gI().addNewTab(empty);
-				ChatManager.gI().switchToLastTab();
-			}
-			else
-			{
-				ChatManager.gI().switchToTab(chatTab);
-			}
-			openUIChatTab();
-			isPaintTeam = (isPaintFriend = (isPaintEnemies = (isPaintClan = (isPaintFindTeam = false))));
-			ChatTextField.gI().center = null;
-			break;
-		}
-		case 12003:
-			doShowFriendUI();
-			break;
-		case 12005:
-			doShowChatTextFieldInMessage();
-			break;
-		case 12006:
-			doShowBlockMessageMenu();
-			break;
-		case 12007:
-			step = 1;
-			strErrCard = string.Empty;
-			doShowErrorInput();
-			break;
-		case 12008:
-			domenuErrorAdim();
-			break;
-		case 12009:
-		{
-			empty = (string)p;
-			MyVector myVector5 = new MyVector();
-			myVector5.addElement(new Command(mResources.CHAR_ORDER[7], 12002, empty));
-			myVector5.addElement(new Command(mResources.TEAMLEADER_SELECT[2], 110803, empty));
-			if (isPaintTeam)
-			{
-				myVector5.addElement(new Command(mResources.CHAR_ORDER[6], 110804));
-			}
-			if (isPaintMessage)
-			{
-				myVector5.addElement(new Command(mResources.MOVETO, 14020, empty));
-				myVector5.addElement(new Command(mResources.CHAR_ORDER[6], 1108041, empty));
-			}
-			GameCanvas.menu.startAt(myVector5, 0);
-			break;
-		}
-		case 13001:
-			actView(32);
-			break;
-		case 13002:
-			actStoreFashionBuy();
-			break;
-		case 14001:
-			actdoKyNang();
-			break;
-		case 14002:
-			doUnfocusChar();
-			break;
-		case 14003:
-			doCharFocusList();
-			break;
-		case 14004:
-			domenuClanNotice();
-			break;
-		case 14005:
-			domenuClanLeader();
-			break;
-		case 14006:
-			empty = (string)p;
-			actSetClanCommand(empty);
-			break;
-		case 14007:
-			domenuClanConfig();
-			break;
-		case 14008:
-			GameCanvas.startYesNoDlg(mResources.MOVE_OUT_CLAN1, new Command(mResources.YES, 140081), new Command(mResources.NO, 1));
-			break;
-		case 14009:
-			domenuClanPermission();
-			break;
-		case 14010:
-			GameCanvas.inputDlg.show(mResources.INPUT_CLAN_CONTRIBUTE, new Command(mResources.ACCEPT, GameCanvas.instance, 88833, null), TField.INPUT_TYPE_NUMERIC);
-			break;
-		case 14011:
-			isMessageMenu = false;
-			break;
-		case 14012:
-			actConvert_HanhTrang();
-			break;
-		case 14013:
-			actConvertLeft();
-			break;
-		case 14014:
-			actConvertMoveOut();
-			break;
-		case 14015:
-			actItemConvertMoveOut();
-			break;
-		case 14016:
-			updateItemInfo(3, arrItemConvert[indexSelect]);
-			break;
-		case 14017:
-			domenuEnemieLeft();
-			break;
-		case 14018:
-			actView(34);
-			break;
-		case 14019:
-			actClanStoreBuy();
-			break;
-		case 14020:
-			if (isHaveVanBienLenh())
-			{
+			case 11068:
 				empty = (string)p;
-				Service.gI().textBoxId(1, empty);
-			}
-			else
-			{
-				GameCanvas.startOKDlg(mResources.ALERT_MOVETO);
-			}
-			break;
-		case 14021:
-			actSetDunListCommand();
-			break;
-		case 14022:
-			actEliteShopBuy();
-			break;
-		case 14023:
-			actView(35);
-			break;
-		case 14024:
-			actSetRankedListCommand(1);
-			break;
-		case 14025:
-			actSetRankedListCommand(0);
-			break;
-		case 15001:
-			doStandToBag();
-			break;
-		case 15041:
-			domenuSortItemStand();
-			break;
-		case 15002:
-			try
-			{
-				int num3 = int.Parse(tfText.getText());
-				if (num3 <= 0)
+				actOpenWeb(empty);
+				break;
+			case 11069:
+				actOpenWebCancel();
+				break;
+			case 11070:
 				{
-					GameCanvas.startOKDlg(mResources.INVALID_NUM);
+					Party pt = (Party)p;
+					actRefresh_TeamLeader(pt);
+					break;
 				}
-				GameCanvas.startYesNoDlg(mResources.replace(mResources.SALE_ASK, NinjaUtil.numberToString(num3 + string.Empty)), new Command(mResources.YES, 150021), new Command(mResources.NO, 1));
+			case 11071:
+				Service.gI().outParty();
 				break;
-			}
-			catch (Exception)
-			{
-				GameCanvas.startOKDlg(mResources.INVALID_NUM);
+			case 11072:
+				actSaleItem();
 				break;
-			}
-		case 15042:
-			GameCanvas.startYesNoDlg(mResources.replace(mResources.BUY_ASK, NinjaUtil.numberToString(arrItemStands[indexSelect].price + string.Empty)), new Command(mResources.YES, 150421), new Command(mResources.NO, 1));
-			break;
-		case 15081:
-			Service.gI().useClanItem();
-			break;
-		case 15082:
-			GameCanvas.inputDlg.show(mResources.INPUT_MEM_NAME, new Command(mResources.OK, GameCanvas.instance, 88843, indexSelect), TField.INPUT_TYPE_ANY);
-			break;
-		case 15130:
-			Char.aFoodValue = 1;
-			break;
-		case 15131:
-			Char.aFoodValue = 10;
-			break;
-		case 15132:
-			Char.aFoodValue = 20;
-			break;
-		case 15133:
-			Char.aFoodValue = 30;
-			break;
-		case 15134:
-			Char.aFoodValue = 40;
-			break;
-		case 15135:
-			Char.aFoodValue = 50;
-			break;
-		case 15136:
-			Char.aFoodValue = 60;
-			break;
-		case 15137:
-			Char.aFoodValue = 70;
-			break;
-		case 110001:
-			doMenuInforMe();
-			break;
-		case 110002:
-			doShowMap();
-			break;
-		case 110003:
-			doMenusynthesis();
-			break;
-		case 110004:
-			actMenu4();
-			break;
-		case 110005:
-			doOpenUI(14);
-			break;
-		case 110006:
-			actOrder();
-			break;
-		case 110007:
-			doOpenUI(7);
-			break;
-		case 110008:
-			doOpenUI(6);
-			break;
-		case 110009:
-			doOpenUI(9);
-			break;
-		case 110010:
-			doOpenUI(8);
-			break;
-		case 110011:
-			doOpenUI(10);
-			break;
-		case 110012:
-			doOpenUI(11);
-			break;
-		case 110013:
-			doOpenUI(12);
-			break;
-		case 110014:
-			doOpenUI(4);
-			break;
-		case 110015:
-			doOpenUI(13);
-			break;
-		case 110016:
-			Service.gI().openUIZone();
-			break;
-		case 110017:
-			openUITrade();
-			break;
-		case 110018:
-			doShowListChatTab();
-			break;
-		case 110019:
-			changeTaskInfo();
-			break;
-		case 110020:
-		{
-			Item item9 = getItemFocus(3);
-			GameCanvas.startOKDlg("type: " + item9.template.type + " id: " + item9.template.id);
-			break;
-		}
-		case 110021:
-			MenuAuto.Menuauto();
-			break;
-		case 110022:
-			gI().doOpenUI(4);
-			break;
-		case 110023:
-			Code.Paint("Tự sát");
-			Code.Die();
-			break;
-		case 110024:
-		{
-			Npc npc2 = Char.FindNpc(13);
-			if (Math.abs(Char.getMyChar().cx - npc2.cx) > 22 || Math.abs(Char.getMyChar().cy - npc2.cy) > 22)
-			{
-				Char.Move(npc2.cx, npc2.cy);
-			}
-			Service.gI().openUIZone();
-			break;
-		}
-		case 110051:
-			actBuy(25);
-			break;
-		case 110052:
-			actBuys(25);
-			break;
-		case 110081:
-			actBuy(24);
-			break;
-		case 110082:
-			actBuys(24);
-			break;
-		case 110101:
-			actBuy(23);
-			break;
-		case 110102:
-			actBuys(23);
-			break;
-		case 110121:
-			actBuy(22);
-			break;
-		case 110122:
-			actBuys(22);
-			break;
-		case 110141:
-			actBuy(21);
-			break;
-		case 110142:
-			actBuys(21);
-			break;
-		case 110161:
-			actBuy(20);
-			break;
-		case 110162:
-			actBuys(20);
-			break;
-		case 110181:
-			actBuy(15);
-			break;
-		case 110182:
-			actBuys(15);
-			break;
-		case 110201:
-			actBuy(14);
-			break;
-		case 110202:
-			actBuys(14);
-			break;
-		case 110221:
-			actBagSortItem();
-			break;
-		case 110244:
-			actBagSplitItem();
-			break;
-		case 110361:
-			actionCoinTradeAccept();
-			break;
-		case 110382:
-			Service.gI().returnTownFromDead();
-			break;
-		case 110383:
-			Service.gI().wakeUpFromDead();
-			break;
-		case 110391:
-			actmenuAttack(1);
-			break;
-		case 110392:
-			actmenuAttack(2);
-			break;
-		case 110393:
-			actmenuAttack(3);
-			break;
-		case 110394:
-			actmenuAttack(4);
-			break;
-		case 110395:
-			actmenuAttack(5);
-			break;
-		case 110396:
-			actmenuAttack(6);
-			break;
-		case 110397:
-			actmenuAttack(7);
-			break;
-		case 110398:
-			actmenuAttack(8);
-			break;
-		case 110399:
-			actmenuAttack(9);
-			break;
-		case 110441:
-			doAddFriend();
-			break;
-		case 110451:
-			actInputTeam();
-			break;
-		case 110452:
-			actRefreshFindTeam();
-			break;
-		case 110471:
-			actCreateTeam();
-			break;
-		case 110531:
-		{
-			Item item8 = (Item)p;
-			Service.gI().useItemChangeMap(item8.indexUI, GameCanvas.menu.menuSelectedItem + 3);
-			break;
-		}
-		case 110561:
-			GameCanvas.endDlg();
-			updateCommandForUI();
-			break;
-		case 110562:
-		{
-			Item item7 = (Item)p;
-			doActionSaleOk(item7);
-			break;
-		}
-		case 110701:
-			Service.gI().outParty();
-			break;
-		case 110702:
-			Service.gI().lockParty(isLock: true);
-			break;
-		case 110703:
-			Service.gI().lockParty(isLock: false);
-			break;
-		case 110721:
-			Service.gI().saleItem(indexSelect, 1);
-			break;
-		case 110722:
-			actionSale(Char.getMyChar().arrItemBag[indexSelect]);
-			break;
-		case 110723:
-			Service.gI().saleItem(indexSelect, Char.getMyChar().arrItemBag[indexSelect].quantity);
-			break;
-		case 110771:
-			empty = (string)p;
-			GameCanvas.endDlg();
-			Service.gI().removeFriend(empty);
-			break;
-		case 110791:
-			empty = (string)p;
-			Service.gI().addParty(empty);
-			break;
-		case 110792:
-			empty = (string)p;
-			actSetDeleteFriend(empty);
-			break;
-		case 110801:
-			Service.gI().moveMember(indexRow);
-			break;
-		case 110802:
-			Service.gI().changeTeamLeader(indexRow);
-			break;
-		case 110803:
-			empty = (string)p;
-			Service.gI().addFriend(empty);
-			break;
-		case 110804:
-			viewMemberInfo();
-			break;
-		case 110805:
-			viewMemberClanInfo();
-			break;
-		case 110811:
-		{
-			SkillTemplate skillTemplate2 = Char.getMyChar().nClass.skillTemplates[indexSelect];
-			doSetKeySkill(skillTemplate2);
-			break;
-		}
-		case 110812:
-		{
-			SkillTemplate skillTemplate = Char.getMyChar().nClass.skillTemplates[indexSelect];
-			doSetOnScreenSkill(skillTemplate);
-			break;
-		}
-		case 110821:
-			Service.gI().itemBodyToBag(indexSelect + indextabTrangbi);
-			break;
-		case 110841:
-			Service.gI().upPotential(indexTitle - 1, 1);
-			setLCR();
-			break;
-		case 110842:
-			doUpPotential();
-			break;
-		case 110851:
-		{
-			Item item6 = (Item)p;
-			Service.gI().buyItem(item6.typeUI, item6.indexUI, 1);
-			break;
-		}
-		case 110852:
-		{
-			Item item5 = (Item)p;
-			actionBuy(item5);
-			break;
-		}
-		case 110854:
-			actTrangBiCenter();
-			break;
-		case 110921:
-		{
-			Item item4 = (Item)p;
-			Service.gI().buyItem(item4.typeUI, item4.indexUI, 1);
-			break;
-		}
-		case 110922:
-		{
-			Item item3 = (Item)p;
-			actionBuy(item3);
-			break;
-		}
-		case 110923:
-			actView(16);
-			break;
-		case 110924:
-			actView(17);
-			break;
-		case 110925:
-			actView(18);
-			break;
-		case 110926:
-			actView(19);
-			break;
-		case 110981:
-			upGrade();
-			break;
-		case 110991:
-			isViewNext = true;
-			updateItemInfo(3, itemUpGrade);
-			break;
-		case 111001:
-			actItemUpgradeMoveOut();
-			break;
-		case 111031:
-			if (isPaintTinhluyen)
-			{
-				Service.gI().tinhluyen(itemSplit, arrItemSplit);
-			}
-			else if (isPaintDichChuyen)
-			{
-				Service.gI().dichchuyen(itemSplit, arrItemSplit);
-			}
-			else if (isPaintLuyenNgoc)
-			{
-				Service.gI().ngockham(1, null, itemSplit, arrItemSplit);
-			}
-			else if (isPaintGotNgoc)
-			{
-				Service.gI().ngockham(2, null, itemSplit, null);
-			}
-			else if (isPaintThaoNgoc)
-			{
-				Service.gI().ngockham(3, null, itemSplit, null);
-			}
-			break;
-		case 111071:
-			actUpPearlMoveOut();
-			break;
-		case 111101:
-		{
-			Item item2 = getItemFocus(4);
-			Service.gI().itemBoxToBag(item2.indexUI);
-			break;
-		}
-		case 120061:
-			ChatManager.blockGlobalChat = !ChatManager.blockGlobalChat;
-			GameCanvas.startOKDlg(mResources.BLOCK_GLOBAL_CHAT + ((!ChatManager.blockGlobalChat) ? mResources.OFF : mResources.ON));
-			break;
-		case 120051:
-		{
-			ChatTab o = (ChatTab)p;
-			ChatManager.gI().chatTabs.removeElement(o);
-			if (ChatManager.gI().currentTabIndex > ChatManager.gI().chatTabs.size() - 1)
-			{
-				ChatManager.gI().switchToPreviousTab();
-			}
-			o = ChatManager.gI().getCurrentChatTab();
-			if (o != null)
-			{
+			case 11073:
+				actionSale(Char.getMyChar().arrItemBag[indexSelect]);
+				break;
+			case 11074:
+				{
+					MyVector myVector6 = (MyVector)p;
+					string empty2 = string.Empty;
+					short port = short.Parse(empty2 + myVector6.elementAt(0));
+					string syntax = string.Empty + myVector6.elementAt(1);
+					actSendSMSLeft(port, syntax);
+					break;
+				}
+			case 11075:
+				actSendSMSRight();
+				break;
+			case 11076:
+				empty = (string)p;
+				Service.gI().addParty(empty);
+				break;
+			case 11077:
+				empty = (string)p;
+				actConfirmRemoveFriend(empty);
+				break;
+			case 11078:
+				actSetEnemiesCommand();
+				break;
+			case 11079:
+				actSetFriendCommand();
+				break;
+			case 11080:
+				empty = (string)p;
+				actSetPartyCommand(empty);
+				break;
+			case 11081:
+				actdoGan();
+				break;
+			case 11082:
+				actTrangBiSelect();
+				break;
+			case 11083:
+				actView(5);
+				break;
+			case 11084:
+				actdoUpPoint();
+				break;
+			case 11085:
+				{
+					Item item14 = (Item)p;
+					actBuyQuanNam(item14);
+					break;
+				}
+			case 11086:
+				actTrangBiRight();
+				break;
+			case 11087:
+				{
+					Item item13 = (Item)p;
+					GameCanvas.endDlg();
+					Service.gI().splitItem(item13);
+					break;
+				}
+			case 11088:
+				actView(26);
+				break;
+			case 11089:
+				actView(27);
+				break;
+			case 11090:
+				actView(28);
+				break;
+			case 11091:
+				actView(29);
+				break;
+			case 11092:
+				{
+					Item itemBuy = (Item)p;
+					actBuyLeft(itemBuy);
+					break;
+				}
+			case 11093:
+				actView(2);
+				break;
+			case 11094:
+				actView(6);
+				break;
+			case 11095:
+				actView(7);
+				break;
+			case 11096:
+				actView(8);
+				break;
+			case 11097:
+				actView(9);
+				break;
+			case 11098:
+				actUpgradeLeft();
+				break;
+			case 11099:
+				isViewNext = false;
+				updateItemInfo(3, itemUpGrade);
+				break;
+			case 11100:
+				actUpgradeBag();
+				break;
+			case 11101:
+				{
+					Item item12 = getItemFocus(10);
+					updateItemInfo(3, item12);
+					break;
+				}
+			case 11102:
+				actUpgrade_HanhTrang();
+				break;
+			case 11103:
+				actSplitItem();
+				break;
+			case 11104:
+				updateItemInfo(3, (Item)p);
+				break;
+			case 11105:
+				split();
+				break;
+			case 11106:
+				actSplitItemBag();
+				break;
+			case 11107:
+				actUpPearlSelect();
+				break;
+			case 11108:
+				actView(3);
+				break;
+			case 11109:
+				actUpPearlItems();
+				break;
+			case 11110:
+				{
+					Item item11 = arrItemTradeOrder[indexSelect];
+					updateItemInfo(30, item11);
+					break;
+				}
+			case 11111:
+				{
+					Item item10 = getItemFocus(4);
+					updateItemInfo(4, item10);
+					break;
+				}
+			case 11112:
+				Service.gI().boxSort();
+				break;
+			case 11113:
+				Service.gI().itemBagToBox(Char.getMyChar().arrItemBag[indexSelect].indexUI);
+				break;
+			case 11114:
+				updateItemInfo(3, Char.getMyChar().arrItemBag[indexSelect]);
+				break;
+			case 11115:
+				actBuyItemUILeft();
+				break;
+			case 11116:
+				actBuyItemLeft2();
+				break;
+			case 11120:
+				{
+					object[] obj2 = (object[])p;
+					Skill skill2 = (Skill)obj2[0];
+					int num5 = int.Parse((string)obj2[1]);
+					onScreenSkill[num5] = skill2;
+					saveOnScreenSkillToRMS();
+					break;
+				}
+			case 11121:
+				{
+					object[] obj = (object[])p;
+					Skill skill = (Skill)obj[0];
+					int num4 = int.Parse((string)obj[1]);
+					keySkill[num4] = skill;
+					saveKeySkillToRMS();
+					break;
+				}
+			case 12000:
+				actOpenAlertURL();
+				break;
+			case 12001:
+				ChatManager.gI().switchToTab((int)p);
 				openUIChatTab();
 				break;
-			}
-			ChatTextField.gI().isShow = false;
-			resetButton();
-			break;
-		}
-		case 120062:
-			ChatManager.blockPrivateChat = !ChatManager.blockPrivateChat;
-			GameCanvas.startOKDlg(mResources.BLOCK_PRIVATE_CHAT + ((!ChatManager.blockPrivateChat) ? mResources.OFF : mResources.ON));
-			break;
-		case 120072:
-			if (GameCanvas.input2Dlg.tfInput.getText().Equals(string.Empty))
-			{
-				GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDSERI);
+			case 12002:
+			case 12004:
+				{
+					empty = (string)p;
+					ChatTab chatTab = ChatManager.gI().findTab(empty);
+					if (chatTab == null)
+					{
+						ChatManager.gI().addNewTab(empty);
+						ChatManager.gI().switchToLastTab();
+					}
+					else
+					{
+						ChatManager.gI().switchToTab(chatTab);
+					}
+					openUIChatTab();
+					isPaintTeam = (isPaintFriend = (isPaintEnemies = (isPaintClan = (isPaintFindTeam = false))));
+					ChatTextField.gI().center = null;
+					break;
+				}
+			case 12003:
+				doShowFriendUI();
 				break;
-			}
-			if (GameCanvas.input2Dlg.tfInput2.getText().Equals(string.Empty))
-			{
-				GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDTIME);
+			case 12005:
+				doShowChatTextFieldInMessage();
 				break;
-			}
-			strErrCard = strErrCard + ", Số seri: " + GameCanvas.input2Dlg.tfInput.getText();
-			strErrCard = strErrCard + ", Khoảng thời gian nạp: " + GameCanvas.input2Dlg.tfInput2.getText();
-			Service.gI().adminChat(strErrCard);
-			Out.println("strERRCard: " + strErrCard);
-			GameCanvas.endDlg();
-			break;
-		case 120071:
-			step = 2;
-			if (GameCanvas.input2Dlg.tfInput.getText().Equals(string.Empty))
-			{
-				GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDINFO);
+			case 12006:
+				doShowBlockMessageMenu();
 				break;
-			}
-			if (GameCanvas.input2Dlg.tfInput2.getText().Equals(string.Empty))
-			{
-				GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDMONEY);
+			case 12007:
+				step = 1;
+				strErrCard = string.Empty;
+				doShowErrorInput();
 				break;
-			}
-			strErrCard = "Loại thẻ: " + GameCanvas.input2Dlg.tfInput.getText();
-			strErrCard = strErrCard + ", Mệnh giá: " + GameCanvas.input2Dlg.tfInput2.getText();
-			GameCanvas.endDlg();
-			doShowErrorInput();
-			break;
-		case 120081:
-			GameCanvas.inputDlg.tfInput.setMaxTextLenght(11);
-			GameCanvas.inputDlg.show(mResources.INPUT_REG_NUMPHONE, new Command("OK", null, 120082, null), TField.INPUT_TYPE_NUMERIC);
-			break;
-		case 120082:
-			empty = GameCanvas.inputDlg.tfInput.getText();
-			if (empty.Equals(string.Empty))
-			{
-				GameCanvas.startOKDlg(mResources.NOT_INPUT_NUMPHONE);
+			case 12008:
+				domenuErrorAdim();
 				break;
-			}
-			Service.gI().adminChat("Số điện thoại đăng ký: " + empty);
-			GameCanvas.endDlg();
-			break;
-		case 130011:
-		{
-			Npc npc = (Npc)p;
-			Service.gI().getTask(npc.template.npcTemplateId, 0, -1);
-			npc.chatPopup = null;
-			resetButton();
-			break;
-		}
-		case 130012:
-			((Npc)p).chatPopup = null;
-			resetButton();
-			break;
-		case 130021:
-			actBuy(32);
-			break;
-		case 130022:
-			actBuys(32);
-			break;
-		case 140011:
-			Service.gI().upSkill(Char.getMyChar().nClass.skillTemplates[indexSelect].id, 1);
-			setLCR();
-			break;
-		case 140012:
-			doUpSkill();
-			break;
-		case 140041:
-			GameCanvas.inputDlg.tfInput.setMaxTextLenght(180);
-			GameCanvas.inputDlg.show(mResources.INPUT_CLAN_TEXT, new Command(mResources.ACCEPT, GameCanvas.instance, 88832, null), TField.INPUT_TYPE_ANY);
-			break;
-		case 140042:
-			Service.gI().clanUpLevel();
-			break;
-		case 140043:
-			GameCanvas.inputDlg.show(mResources.INPUT_CLAN_MONEY, new Command(mResources.ACCEPT, GameCanvas.instance, 88834, null), TField.INPUT_TYPE_ANY);
-			break;
-		case 140044:
-			Service.gI().unlockClanItem();
-			break;
-		case 140071:
-			indexRow = 0;
-			indexSelect = 0;
-			scrMain.clear();
-			isViewClanMemOnline = !isViewClanMemOnline;
-			sortClan();
-			break;
-		case 140072:
-			indexRow = 0;
-			indexSelect = 0;
-			scrMain.clear();
-			isSortClanByPointWeek = !isSortClanByPointWeek;
-			sortClan();
-			break;
-		case 140081:
-			Service.gI().outClan();
-			GameCanvas.endDlg();
-			break;
-		case 140091:
-			Service.gI().changeClanType(((Member)vClan.elementAt(indexRow)).name, 3);
-			break;
-		case 140092:
-			Service.gI().changeClanType(((Member)vClan.elementAt(indexRow)).name, 2);
-			break;
-		case 140093:
-			GameCanvas.startYesNoDlg(mResources.CLEAR_CLAN_TYPE, new Command(mResources.YES, 1400931), new Command(mResources.NO, 1));
-			break;
-		case 140094:
-			GameCanvas.startYesNoDlg(mResources.MOVE_OUT_CLAN, new Command(mResources.YES, 1400941), new Command(mResources.NO, 1));
-			break;
-		case 140095:
-		{
-			Member member2 = (Member)vClan.elementAt(indexRow);
-			Service.gI().inviteClanDun(member2.name);
-			break;
-		}
-		case 140096:
-		{
-			MyVector myVector = new MyVector();
-			myVector.addElement(new Command(mResources.INVITE_THIS_PERSON, 1400961));
-			myVector.addElement(new Command(mResources.INVITE_ALL, 1400962));
-			GameCanvas.menu.startAt(myVector, 0);
-			break;
-		}
-		case 140101:
-			updateItemInfo(39, new Item
-			{
-				template = ItemTemplates.get(0),
-				expires = -1L
-			});
-			break;
-		case 140131:
-			GameCanvas.startYesNoDlg(mResources.CONFIRMCONVERT, new Command(mResources.YES, 140132), new Command(mResources.NO, 1));
-			break;
-		case 140132:
-			Convert();
-			break;
-		case 140151:
-			actItemConvertMoveOut2();
-			break;
-		case 140161:
-			updateItemInfo(3, arrItemConvert[2]);
-			break;
-		case 140191:
-			actBuy(34);
-			break;
-		case 140192:
-			actBuys(34);
-			break;
-		case 140221:
-			actBuy(35);
-			break;
-		case 140222:
-			actBuys(35);
-			break;
-		case 150021:
-		{
-			GameCanvas.startWaitDlg();
-			int value = 0;
-			try
-			{
-				value = int.Parse(tfText.getText());
-			}
-			catch (Exception)
-			{
-			}
-			Service.gI().sendToSaleItem(itemSell, value);
-			break;
-		}
-		case 150411:
-			typeSortLevel = 0;
-			typeSortName = 0;
-			if (typeSortPrice == 0)
-			{
-				typeSortPrice = 1;
-			}
-			else if (typeSortPrice == 1)
-			{
-				typeSortPrice = 2;
-			}
-			else if (typeSortPrice == 2)
-			{
-				typeSortPrice = 1;
-			}
-			sortItemStand();
-			break;
-		case 150412:
-			typeSortLevel = 0;
-			typeSortPrice = 0;
-			if (typeSortName == 0)
-			{
-				typeSortName = 1;
-			}
-			else if (typeSortName == 1)
-			{
-				typeSortName = 2;
-			}
-			else if (typeSortName == 2)
-			{
-				typeSortName = 1;
-			}
-			sortItemStand();
-			break;
-		case 150413:
-			typeSortPrice = 0;
-			typeSortName = 0;
-			if (typeSortLevel == 0)
-			{
-				typeSortLevel = 1;
-			}
-			else if (typeSortLevel == 1)
-			{
-				typeSortLevel = 2;
-			}
-			else if (typeSortLevel == 2)
-			{
-				typeSortLevel = 1;
-			}
-			sortItemStand();
-			break;
-		case 150421:
-			GameCanvas.endDlg();
-			Service.gI().buyItemAuction(arrItemStands[indexSelect].item.itemId);
-			break;
-		case 151301:
-			Service.gI().sendCatkeo(Char.getMyChar().mobFocus.getTemplate().mobTemplateId);
-			break;
-		case 909090:
-			doOpenUI(38);
-			break;
-		case 1100011:
-			doBag();
-			break;
-		case 1100012:
-			doskill();
-			break;
-		case 1100013:
-			doTiemnangMe();
-			break;
-		case 1100014:
-			doInfo();
-			break;
-		case 1100015:
-			doTrangbi();
-			break;
-		case 1100016:
-			doThucuoi();
-			break;
-		case 1100017:
-			doBiJuu();
-			break;
-		case 1100032:
-			doShowTaskUI();
-			break;
-		case 1100033:
-			domenuClan();
-			break;
-		case 1100034:
-			domenuLucky_Draw();
-			break;
-		case 1100041:
-			actMenu41();
-			break;
-		case 1100061:
-			doShowFindTeamUI();
-			break;
-		case 1100062:
-			doShowTeamUI();
-			break;
-		case 1100063:
-			doShowFriendUI();
-			break;
-		case 1100064:
-			doShowEnemiesUI();
-			break;
-		case 1100065:
-			actsubMenuOrder();
-			break;
-		case 1100067:
-			domenuPrivateLock();
-			break;
-		case 1100068:
-			doOpenUI(40);
-			break;
-		case 1100181:
-			GameCanvas.startYesNoDlg(mResources.noti_reg, new Command(mResources.COUNTINUE, 1100182), new Command(mResources.NO, GameCanvas.instance, 8882, null));
-			break;
-		case 1100182:
-			GameCanvas.currentDialog = null;
-			GameCanvas.loginScr.switchToMe(isRes: true);
-			break;
-		case 1103991:
-			actmenuAttack(10);
-			break;
-		case 1107921:
-			empty = (string)p;
-			GameCanvas.endDlg();
-			Service.gI().removeFriend(empty);
-			actRemoveWaitAcceptFriend(empty);
-			break;
-		case 1107931:
-			empty = (string)p;
-			Service.gI().addFriend(empty);
-			break;
-		case 1107932:
-			empty = (string)p;
-			actRemoveWaitAcceptFriend(empty);
-			break;
-		case 1108041:
-			empty = (string)p;
-			Service.gI().viewInfo(empty);
-			gI().resetButton();
-			break;
-		case 1400931:
-			Service.gI().changeClanType(((Member)vClan.elementAt(indexRow)).name, 0);
-			GameCanvas.endDlg();
-			break;
-		case 1400941:
-			Service.gI().moveOutClan(((Member)vClan.elementAt(indexRow)).name);
-			GameCanvas.endDlg();
-			break;
-		case 1400961:
-		{
-			Member member = (Member)vClan.elementAt(indexRow);
-			Service.gI().inviteClanBattlefield(member.name);
-			break;
-		}
-		case 11000651:
-			actsubMenuOrder_PK(1);
-			break;
-		case 11000652:
-			actsubMenuOrder_PK(2);
-			break;
-		case 11000653:
-			actsubMenuOrder_PK(3);
-			break;
-		case 11000661:
-			indexMenu = 0;
-			doShowClan();
-			break;
-		case 11000662:
-			indexMenu = 1;
-			doShowClan();
-			Service.gI().requestClanMember();
-			break;
-		case 11000663:
-			indexMenu = 2;
-			doShowClan();
-			Service.gI().requestClanItem();
-			break;
-		case 11000664:
-			indexMenu = 3;
-			doShowClan();
-			Service.gI().requestClanLog();
-			break;
-		case 11000665:
-			isViewClanInvite = !isViewClanInvite;
-			if (isViewClanInvite)
-			{
-				RMS.saveRMSInt(Char.getMyChar().cName + "vci", 1);
-			}
-			else
-			{
-				RMS.saveRMSInt(Char.getMyChar().cName + "vci", 0);
-			}
-			break;
-		case 11000666:
-			indexMenu = 4;
-			doShowClan();
-			Service.gI().requestClanItem();
-			break;
-		case 11000671:
-			GameCanvas.startYesNoDlg(mResources.ACTIVE_PROTECT_ACC, 88836, null, 8882, null);
-			break;
-		case 11000672:
-			GameCanvas.inputDlg.tfInput.setMaxTextLenght(6);
-			GameCanvas.inputDlg.show(mResources.INPUT_PRIVATE_PASS, new Command(mResources.ACCEPT, GameCanvas.instance, 88837, null), TField.INPUT_TYPE_NUMERIC);
-			break;
-		case 11000673:
-			GameCanvas.input2Dlg.setTitle(mResources.OLD_PASS, mResources.NEW_PASS);
-			GameCanvas.input2Dlg.tfInput.setMaxTextLenght(6);
-			GameCanvas.input2Dlg.tfInput2.setMaxTextLenght(6);
-			GameCanvas.input2Dlg.show(mResources.INPUT_PRIVATE_PASS, new Command(mResources.CLOSE, GameCanvas.instance, 8882, null), new Command(mResources.ACCEPT, GameCanvas.instance, 88838, null), TField.INPUT_TYPE_NUMERIC, TField.INPUT_TYPE_NUMERIC);
-			break;
-		case 11000674:
-			GameCanvas.inputDlg.tfInput.setMaxTextLenght(6);
-			GameCanvas.inputDlg.show(mResources.INPUT_PRIVATE_PASS, new Command(mResources.ACCEPT, GameCanvas.instance, 88839, null), TField.INPUT_TYPE_NUMERIC);
-			break;
-		case 1400962:
-			Service.gI().inviteClanBattlefieldAll();
-			break;
+			case 12009:
+				{
+					empty = (string)p;
+					MyVector myVector5 = new MyVector();
+					myVector5.addElement(new Command(mResources.CHAR_ORDER[7], 12002, empty));
+					myVector5.addElement(new Command(mResources.TEAMLEADER_SELECT[2], 110803, empty));
+					if (isPaintTeam)
+					{
+						myVector5.addElement(new Command(mResources.CHAR_ORDER[6], 110804));
+					}
+					if (isPaintMessage)
+					{
+						myVector5.addElement(new Command(mResources.MOVETO, 14020, empty));
+						myVector5.addElement(new Command(mResources.CHAR_ORDER[6], 1108041, empty));
+					}
+					GameCanvas.menu.startAt(myVector5, 0);
+					break;
+				}
+			case 13001:
+				actView(32);
+				break;
+			case 13002:
+				actStoreFashionBuy();
+				break;
+			case 14001:
+				actdoKyNang();
+				break;
+			case 14002:
+				doUnfocusChar();
+				break;
+			case 14003:
+				doCharFocusList();
+				break;
+			case 14004:
+				domenuClanNotice();
+				break;
+			case 14005:
+				domenuClanLeader();
+				break;
+			case 14006:
+				empty = (string)p;
+				actSetClanCommand(empty);
+				break;
+			case 14007:
+				domenuClanConfig();
+				break;
+			case 14008:
+				GameCanvas.startYesNoDlg(mResources.MOVE_OUT_CLAN1, new Command(mResources.YES, 140081), new Command(mResources.NO, 1));
+				break;
+			case 14009:
+				domenuClanPermission();
+				break;
+			case 14010:
+				GameCanvas.inputDlg.show(mResources.INPUT_CLAN_CONTRIBUTE, new Command(mResources.ACCEPT, GameCanvas.instance, 88833, null), TField.INPUT_TYPE_NUMERIC);
+				break;
+			case 14011:
+				isMessageMenu = false;
+				break;
+			case 14012:
+				actConvert_HanhTrang();
+				break;
+			case 14013:
+				actConvertLeft();
+				break;
+			case 14014:
+				actConvertMoveOut();
+				break;
+			case 14015:
+				actItemConvertMoveOut();
+				break;
+			case 14016:
+				updateItemInfo(3, arrItemConvert[indexSelect]);
+				break;
+			case 14017:
+				domenuEnemieLeft();
+				break;
+			case 14018:
+				actView(34);
+				break;
+			case 14019:
+				actClanStoreBuy();
+				break;
+			case 14020:
+				if (isHaveVanBienLenh())
+				{
+					empty = (string)p;
+					Service.gI().textBoxId(1, empty);
+				}
+				else
+				{
+					GameCanvas.startOKDlg(mResources.ALERT_MOVETO);
+				}
+				break;
+			case 14021:
+				actSetDunListCommand();
+				break;
+			case 14022:
+				actEliteShopBuy();
+				break;
+			case 14023:
+				actView(35);
+				break;
+			case 14024:
+				actSetRankedListCommand(1);
+				break;
+			case 14025:
+				actSetRankedListCommand(0);
+				break;
+			case 15001:
+				doStandToBag();
+				break;
+			case 15041:
+				domenuSortItemStand();
+				break;
+			case 15002:
+				try
+				{
+					int num3 = int.Parse(tfText.getText());
+					if (num3 <= 0)
+					{
+						GameCanvas.startOKDlg(mResources.INVALID_NUM);
+					}
+					GameCanvas.startYesNoDlg(mResources.replace(mResources.SALE_ASK, NinjaUtil.numberToString(num3 + string.Empty)), new Command(mResources.YES, 150021), new Command(mResources.NO, 1));
+					break;
+				}
+				catch (Exception)
+				{
+					GameCanvas.startOKDlg(mResources.INVALID_NUM);
+					break;
+				}
+			case 15042:
+				GameCanvas.startYesNoDlg(mResources.replace(mResources.BUY_ASK, NinjaUtil.numberToString(arrItemStands[indexSelect].price + string.Empty)), new Command(mResources.YES, 150421), new Command(mResources.NO, 1));
+				break;
+			case 15081:
+				Service.gI().useClanItem();
+				break;
+			case 15082:
+				GameCanvas.inputDlg.show(mResources.INPUT_MEM_NAME, new Command(mResources.OK, GameCanvas.instance, 88843, indexSelect), TField.INPUT_TYPE_ANY);
+				break;
+			case 15130:
+				Char.aFoodValue = 1;
+				break;
+			case 15131:
+				Char.aFoodValue = 10;
+				break;
+			case 15132:
+				Char.aFoodValue = 20;
+				break;
+			case 15133:
+				Char.aFoodValue = 30;
+				break;
+			case 15134:
+				Char.aFoodValue = 40;
+				break;
+			case 15135:
+				Char.aFoodValue = 50;
+				break;
+			case 15136:
+				Char.aFoodValue = 60;
+				break;
+			case 15137:
+				Char.aFoodValue = 70;
+				break;
+			case 110001:
+				doMenuInforMe();
+				break;
+			case 110002:
+				doShowMap();
+				break;
+			case 110003:
+				doMenusynthesis();
+				break;
+			case 110004:
+				actMenu4();
+				break;
+			case 110005:
+				doOpenUI(14);
+				break;
+			case 110006:
+				actOrder();
+				break;
+			case 110007:
+				doOpenUI(7);
+				break;
+			case 110008:
+				doOpenUI(6);
+				break;
+			case 110009:
+				doOpenUI(9);
+				break;
+			case 110010:
+				doOpenUI(8);
+				break;
+			case 110011:
+				doOpenUI(10);
+				break;
+			case 110012:
+				doOpenUI(11);
+				break;
+			case 110013:
+				doOpenUI(12);
+				break;
+			case 110014:
+				doOpenUI(4);
+				break;
+			case 110015:
+				doOpenUI(13);
+				break;
+			case 110016:
+				Service.gI().openUIZone();
+				break;
+			case 110017:
+				openUITrade();
+				break;
+			case 110018:
+				doShowListChatTab();
+				break;
+			case 110019:
+				changeTaskInfo();
+				break;
+			case 110020:
+				{
+					Item item9 = getItemFocus(3);
+					GameCanvas.startOKDlg("type: " + item9.template.type + " id: " + item9.template.id);
+					break;
+				}
+			case 110021:
+				MenuAuto.Menuauto();
+				break;
+			case 110022:
+				gI().doOpenUI(4);
+				break;
+			case 110023:
+				Code.Paint("Tự sát");
+				Code.Die();
+				break;
+			case 110024:
+				{
+					Npc npc2 = Char.FindNpc(13);
+					if (Math.abs(Char.getMyChar().cx - npc2.cx) > 22 || Math.abs(Char.getMyChar().cy - npc2.cy) > 22)
+					{
+						Char.Move(npc2.cx, npc2.cy);
+					}
+					Service.gI().openUIZone();
+					break;
+				}
+			case 110051:
+				actBuy(25);
+				break;
+			case 110052:
+				actBuys(25);
+				break;
+			case 110081:
+				actBuy(24);
+				break;
+			case 110082:
+				actBuys(24);
+				break;
+			case 110101:
+				actBuy(23);
+				break;
+			case 110102:
+				actBuys(23);
+				break;
+			case 110121:
+				actBuy(22);
+				break;
+			case 110122:
+				actBuys(22);
+				break;
+			case 110141:
+				actBuy(21);
+				break;
+			case 110142:
+				actBuys(21);
+				break;
+			case 110161:
+				actBuy(20);
+				break;
+			case 110162:
+				actBuys(20);
+				break;
+			case 110181:
+				actBuy(15);
+				break;
+			case 110182:
+				actBuys(15);
+				break;
+			case 110201:
+				actBuy(14);
+				break;
+			case 110202:
+				actBuys(14);
+				break;
+			case 110221:
+				actBagSortItem();
+				break;
+			case 110244:
+				actBagSplitItem();
+				break;
+			case 110361:
+				actionCoinTradeAccept();
+				break;
+			case 110382:
+				Service.gI().returnTownFromDead();
+				break;
+			case 110383:
+				Service.gI().wakeUpFromDead();
+				break;
+			case 110391:
+				actmenuAttack(1);
+				break;
+			case 110392:
+				actmenuAttack(2);
+				break;
+			case 110393:
+				actmenuAttack(3);
+				break;
+			case 110394:
+				actmenuAttack(4);
+				break;
+			case 110395:
+				actmenuAttack(5);
+				break;
+			case 110396:
+				actmenuAttack(6);
+				break;
+			case 110397:
+				actmenuAttack(7);
+				break;
+			case 110398:
+				actmenuAttack(8);
+				break;
+			case 110399:
+				actmenuAttack(9);
+				break;
+			case 110441:
+				doAddFriend();
+				break;
+			case 110451:
+				actInputTeam();
+				break;
+			case 110452:
+				actRefreshFindTeam();
+				break;
+			case 110471:
+				actCreateTeam();
+				break;
+			case 110531:
+				{
+					Item item8 = (Item)p;
+					Service.gI().useItemChangeMap(item8.indexUI, GameCanvas.menu.menuSelectedItem + 3);
+					break;
+				}
+			case 110561:
+				GameCanvas.endDlg();
+				updateCommandForUI();
+				break;
+			case 110562:
+				{
+					Item item7 = (Item)p;
+					doActionSaleOk(item7);
+					break;
+				}
+			case 110701:
+				Service.gI().outParty();
+				break;
+			case 110702:
+				Service.gI().lockParty(isLock: true);
+				break;
+			case 110703:
+				Service.gI().lockParty(isLock: false);
+				break;
+			case 110721:
+				Service.gI().saleItem(indexSelect, 1);
+				break;
+			case 110722:
+				actionSale(Char.getMyChar().arrItemBag[indexSelect]);
+				break;
+			case 110723:
+				Service.gI().saleItem(indexSelect, Char.getMyChar().arrItemBag[indexSelect].quantity);
+				break;
+			case 110771:
+				empty = (string)p;
+				GameCanvas.endDlg();
+				Service.gI().removeFriend(empty);
+				break;
+			case 110791:
+				empty = (string)p;
+				Service.gI().addParty(empty);
+				break;
+			case 110792:
+				empty = (string)p;
+				actSetDeleteFriend(empty);
+				break;
+			case 110801:
+				Service.gI().moveMember(indexRow);
+				break;
+			case 110802:
+				Service.gI().changeTeamLeader(indexRow);
+				break;
+			case 110803:
+				empty = (string)p;
+				Service.gI().addFriend(empty);
+				break;
+			case 110804:
+				viewMemberInfo();
+				break;
+			case 110805:
+				viewMemberClanInfo();
+				break;
+			case 110811:
+				{
+					SkillTemplate skillTemplate2 = Char.getMyChar().nClass.skillTemplates[indexSelect];
+					doSetKeySkill(skillTemplate2);
+					break;
+				}
+			case 110812:
+				{
+					SkillTemplate skillTemplate = Char.getMyChar().nClass.skillTemplates[indexSelect];
+					doSetOnScreenSkill(skillTemplate);
+					break;
+				}
+			case 110821:
+				Service.gI().itemBodyToBag(indexSelect + indextabTrangbi);
+				break;
+			case 110841:
+				Service.gI().upPotential(indexTitle - 1, 1);
+				setLCR();
+				break;
+			case 110842:
+				doUpPotential();
+				break;
+			case 110851:
+				{
+					Item item6 = (Item)p;
+					Service.gI().buyItem(item6.typeUI, item6.indexUI, 1);
+					break;
+				}
+			case 110852:
+				{
+					Item item5 = (Item)p;
+					actionBuy(item5);
+					break;
+				}
+			case 110854:
+				actTrangBiCenter();
+				break;
+			case 110921:
+				{
+					Item item4 = (Item)p;
+					Service.gI().buyItem(item4.typeUI, item4.indexUI, 1);
+					break;
+				}
+			case 110922:
+				{
+					Item item3 = (Item)p;
+					actionBuy(item3);
+					break;
+				}
+			case 110923:
+				actView(16);
+				break;
+			case 110924:
+				actView(17);
+				break;
+			case 110925:
+				actView(18);
+				break;
+			case 110926:
+				actView(19);
+				break;
+			case 110981:
+				upGrade();
+				break;
+			case 110991:
+				isViewNext = true;
+				updateItemInfo(3, itemUpGrade);
+				break;
+			case 111001:
+				actItemUpgradeMoveOut();
+				break;
+			case 111031:
+				if (isPaintTinhluyen)
+				{
+					Service.gI().tinhluyen(itemSplit, arrItemSplit);
+				}
+				else if (isPaintDichChuyen)
+				{
+					Service.gI().dichchuyen(itemSplit, arrItemSplit);
+				}
+				else if (isPaintLuyenNgoc)
+				{
+					Service.gI().ngockham(1, null, itemSplit, arrItemSplit);
+				}
+				else if (isPaintGotNgoc)
+				{
+					Service.gI().ngockham(2, null, itemSplit, null);
+				}
+				else if (isPaintThaoNgoc)
+				{
+					Service.gI().ngockham(3, null, itemSplit, null);
+				}
+				break;
+			case 111071:
+				actUpPearlMoveOut();
+				break;
+			case 111101:
+				{
+					Item item2 = getItemFocus(4);
+					Service.gI().itemBoxToBag(item2.indexUI);
+					break;
+				}
+			case 120061:
+				ChatManager.blockGlobalChat = !ChatManager.blockGlobalChat;
+				GameCanvas.startOKDlg(mResources.BLOCK_GLOBAL_CHAT + ((!ChatManager.blockGlobalChat) ? mResources.OFF : mResources.ON));
+				break;
+			case 120051:
+				{
+					ChatTab o = (ChatTab)p;
+					ChatManager.gI().chatTabs.removeElement(o);
+					if (ChatManager.gI().currentTabIndex > ChatManager.gI().chatTabs.size() - 1)
+					{
+						ChatManager.gI().switchToPreviousTab();
+					}
+					o = ChatManager.gI().getCurrentChatTab();
+					if (o != null)
+					{
+						openUIChatTab();
+						break;
+					}
+					ChatTextField.gI().isShow = false;
+					resetButton();
+					break;
+				}
+			case 120062:
+				ChatManager.blockPrivateChat = !ChatManager.blockPrivateChat;
+				GameCanvas.startOKDlg(mResources.BLOCK_PRIVATE_CHAT + ((!ChatManager.blockPrivateChat) ? mResources.OFF : mResources.ON));
+				break;
+			case 120072:
+				if (GameCanvas.input2Dlg.tfInput.getText().Equals(string.Empty))
+				{
+					GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDSERI);
+					break;
+				}
+				if (GameCanvas.input2Dlg.tfInput2.getText().Equals(string.Empty))
+				{
+					GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDTIME);
+					break;
+				}
+				strErrCard = strErrCard + ", Số seri: " + GameCanvas.input2Dlg.tfInput.getText();
+				strErrCard = strErrCard + ", Khoảng thời gian nạp: " + GameCanvas.input2Dlg.tfInput2.getText();
+				Service.gI().adminChat(strErrCard);
+				Out.println("strERRCard: " + strErrCard);
+				GameCanvas.endDlg();
+				break;
+			case 120071:
+				step = 2;
+				if (GameCanvas.input2Dlg.tfInput.getText().Equals(string.Empty))
+				{
+					GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDINFO);
+					break;
+				}
+				if (GameCanvas.input2Dlg.tfInput2.getText().Equals(string.Empty))
+				{
+					GameCanvas.startOKDlg(mResources.NOT_INPUT_CARDMONEY);
+					break;
+				}
+				strErrCard = "Loại thẻ: " + GameCanvas.input2Dlg.tfInput.getText();
+				strErrCard = strErrCard + ", Mệnh giá: " + GameCanvas.input2Dlg.tfInput2.getText();
+				GameCanvas.endDlg();
+				doShowErrorInput();
+				break;
+			case 120081:
+				GameCanvas.inputDlg.tfInput.setMaxTextLenght(11);
+				GameCanvas.inputDlg.show(mResources.INPUT_REG_NUMPHONE, new Command("OK", null, 120082, null), TField.INPUT_TYPE_NUMERIC);
+				break;
+			case 120082:
+				empty = GameCanvas.inputDlg.tfInput.getText();
+				if (empty.Equals(string.Empty))
+				{
+					GameCanvas.startOKDlg(mResources.NOT_INPUT_NUMPHONE);
+					break;
+				}
+				Service.gI().adminChat("Số điện thoại đăng ký: " + empty);
+				GameCanvas.endDlg();
+				break;
+			case 130011:
+				{
+					Npc npc = (Npc)p;
+					Service.gI().getTask(npc.template.npcTemplateId, 0, -1);
+					npc.chatPopup = null;
+					resetButton();
+					break;
+				}
+			case 130012:
+				((Npc)p).chatPopup = null;
+				resetButton();
+				break;
+			case 130021:
+				actBuy(32);
+				break;
+			case 130022:
+				actBuys(32);
+				break;
+			case 140011:
+				Service.gI().upSkill(Char.getMyChar().nClass.skillTemplates[indexSelect].id, 1);
+				setLCR();
+				break;
+			case 140012:
+				doUpSkill();
+				break;
+			case 140041:
+				GameCanvas.inputDlg.tfInput.setMaxTextLenght(180);
+				GameCanvas.inputDlg.show(mResources.INPUT_CLAN_TEXT, new Command(mResources.ACCEPT, GameCanvas.instance, 88832, null), TField.INPUT_TYPE_ANY);
+				break;
+			case 140042:
+				Service.gI().clanUpLevel();
+				break;
+			case 140043:
+				GameCanvas.inputDlg.show(mResources.INPUT_CLAN_MONEY, new Command(mResources.ACCEPT, GameCanvas.instance, 88834, null), TField.INPUT_TYPE_ANY);
+				break;
+			case 140044:
+				Service.gI().unlockClanItem();
+				break;
+			case 140071:
+				indexRow = 0;
+				indexSelect = 0;
+				scrMain.clear();
+				isViewClanMemOnline = !isViewClanMemOnline;
+				sortClan();
+				break;
+			case 140072:
+				indexRow = 0;
+				indexSelect = 0;
+				scrMain.clear();
+				isSortClanByPointWeek = !isSortClanByPointWeek;
+				sortClan();
+				break;
+			case 140081:
+				Service.gI().outClan();
+				GameCanvas.endDlg();
+				break;
+			case 140091:
+				Service.gI().changeClanType(((Member)vClan.elementAt(indexRow)).name, 3);
+				break;
+			case 140092:
+				Service.gI().changeClanType(((Member)vClan.elementAt(indexRow)).name, 2);
+				break;
+			case 140093:
+				GameCanvas.startYesNoDlg(mResources.CLEAR_CLAN_TYPE, new Command(mResources.YES, 1400931), new Command(mResources.NO, 1));
+				break;
+			case 140094:
+				GameCanvas.startYesNoDlg(mResources.MOVE_OUT_CLAN, new Command(mResources.YES, 1400941), new Command(mResources.NO, 1));
+				break;
+			case 140095:
+				{
+					Member member2 = (Member)vClan.elementAt(indexRow);
+					Service.gI().inviteClanDun(member2.name);
+					break;
+				}
+			case 140096:
+				{
+					MyVector myVector = new MyVector();
+					myVector.addElement(new Command(mResources.INVITE_THIS_PERSON, 1400961));
+					myVector.addElement(new Command(mResources.INVITE_ALL, 1400962));
+					GameCanvas.menu.startAt(myVector, 0);
+					break;
+				}
+			case 140101:
+				updateItemInfo(39, new Item
+				{
+					template = ItemTemplates.get(0),
+					expires = -1L
+				});
+				break;
+			case 140131:
+				GameCanvas.startYesNoDlg(mResources.CONFIRMCONVERT, new Command(mResources.YES, 140132), new Command(mResources.NO, 1));
+				break;
+			case 140132:
+				Convert();
+				break;
+			case 140151:
+				actItemConvertMoveOut2();
+				break;
+			case 140161:
+				updateItemInfo(3, arrItemConvert[2]);
+				break;
+			case 140191:
+				actBuy(34);
+				break;
+			case 140192:
+				actBuys(34);
+				break;
+			case 140221:
+				actBuy(35);
+				break;
+			case 140222:
+				actBuys(35);
+				break;
+			case 150021:
+				{
+					GameCanvas.startWaitDlg();
+					int value = 0;
+					try
+					{
+						value = int.Parse(tfText.getText());
+					}
+					catch (Exception)
+					{
+					}
+					Service.gI().sendToSaleItem(itemSell, value);
+					break;
+				}
+			case 150411:
+				typeSortLevel = 0;
+				typeSortName = 0;
+				if (typeSortPrice == 0)
+				{
+					typeSortPrice = 1;
+				}
+				else if (typeSortPrice == 1)
+				{
+					typeSortPrice = 2;
+				}
+				else if (typeSortPrice == 2)
+				{
+					typeSortPrice = 1;
+				}
+				sortItemStand();
+				break;
+			case 150412:
+				typeSortLevel = 0;
+				typeSortPrice = 0;
+				if (typeSortName == 0)
+				{
+					typeSortName = 1;
+				}
+				else if (typeSortName == 1)
+				{
+					typeSortName = 2;
+				}
+				else if (typeSortName == 2)
+				{
+					typeSortName = 1;
+				}
+				sortItemStand();
+				break;
+			case 150413:
+				typeSortPrice = 0;
+				typeSortName = 0;
+				if (typeSortLevel == 0)
+				{
+					typeSortLevel = 1;
+				}
+				else if (typeSortLevel == 1)
+				{
+					typeSortLevel = 2;
+				}
+				else if (typeSortLevel == 2)
+				{
+					typeSortLevel = 1;
+				}
+				sortItemStand();
+				break;
+			case 150421:
+				GameCanvas.endDlg();
+				Service.gI().buyItemAuction(arrItemStands[indexSelect].item.itemId);
+				break;
+			case 151301:
+				Service.gI().sendCatkeo(Char.getMyChar().mobFocus.getTemplate().mobTemplateId);
+				break;
+			case 909090:
+				doOpenUI(38);
+				break;
+			case 1100011:
+				doBag();
+				break;
+			case 1100012:
+				doskill();
+				break;
+			case 1100013:
+				doTiemnangMe();
+				break;
+			case 1100014:
+				doInfo();
+				break;
+			case 1100015:
+				doTrangbi();
+				break;
+			case 1100016:
+				doThucuoi();
+				break;
+			case 1100017:
+				doBiJuu();
+				break;
+			case 1100032:
+				doShowTaskUI();
+				break;
+			case 1100033:
+				domenuClan();
+				break;
+			case 1100034:
+				domenuLucky_Draw();
+				break;
+			case 1100041:
+				actMenu41();
+				break;
+			case 1100061:
+				doShowFindTeamUI();
+				break;
+			case 1100062:
+				doShowTeamUI();
+				break;
+			case 1100063:
+				doShowFriendUI();
+				break;
+			case 1100064:
+				doShowEnemiesUI();
+				break;
+			case 1100065:
+				actsubMenuOrder();
+				break;
+			case 1100067:
+				domenuPrivateLock();
+				break;
+			case 1100068:
+				doOpenUI(40);
+				break;
+			case 1100181:
+				GameCanvas.startYesNoDlg(mResources.noti_reg, new Command(mResources.COUNTINUE, 1100182), new Command(mResources.NO, GameCanvas.instance, 8882, null));
+				break;
+			case 1100182:
+				GameCanvas.currentDialog = null;
+				GameCanvas.loginScr.switchToMe(isRes: true);
+				break;
+			case 1103991:
+				actmenuAttack(10);
+				break;
+			case 1107921:
+				empty = (string)p;
+				GameCanvas.endDlg();
+				Service.gI().removeFriend(empty);
+				actRemoveWaitAcceptFriend(empty);
+				break;
+			case 1107931:
+				empty = (string)p;
+				Service.gI().addFriend(empty);
+				break;
+			case 1107932:
+				empty = (string)p;
+				actRemoveWaitAcceptFriend(empty);
+				break;
+			case 1108041:
+				empty = (string)p;
+				Service.gI().viewInfo(empty);
+				gI().resetButton();
+				break;
+			case 1400931:
+				Service.gI().changeClanType(((Member)vClan.elementAt(indexRow)).name, 0);
+				GameCanvas.endDlg();
+				break;
+			case 1400941:
+				Service.gI().moveOutClan(((Member)vClan.elementAt(indexRow)).name);
+				GameCanvas.endDlg();
+				break;
+			case 1400961:
+				{
+					Member member = (Member)vClan.elementAt(indexRow);
+					Service.gI().inviteClanBattlefield(member.name);
+					break;
+				}
+			case 11000651:
+				actsubMenuOrder_PK(1);
+				break;
+			case 11000652:
+				actsubMenuOrder_PK(2);
+				break;
+			case 11000653:
+				actsubMenuOrder_PK(3);
+				break;
+			case 11000661:
+				indexMenu = 0;
+				doShowClan();
+				break;
+			case 11000662:
+				indexMenu = 1;
+				doShowClan();
+				Service.gI().requestClanMember();
+				break;
+			case 11000663:
+				indexMenu = 2;
+				doShowClan();
+				Service.gI().requestClanItem();
+				break;
+			case 11000664:
+				indexMenu = 3;
+				doShowClan();
+				Service.gI().requestClanLog();
+				break;
+			case 11000665:
+				isViewClanInvite = !isViewClanInvite;
+				if (isViewClanInvite)
+				{
+					RMS.saveRMSInt(Char.getMyChar().cName + "vci", 1);
+				}
+				else
+				{
+					RMS.saveRMSInt(Char.getMyChar().cName + "vci", 0);
+				}
+				break;
+			case 11000666:
+				indexMenu = 4;
+				doShowClan();
+				Service.gI().requestClanItem();
+				break;
+			case 11000671:
+				GameCanvas.startYesNoDlg(mResources.ACTIVE_PROTECT_ACC, 88836, null, 8882, null);
+				break;
+			case 11000672:
+				GameCanvas.inputDlg.tfInput.setMaxTextLenght(6);
+				GameCanvas.inputDlg.show(mResources.INPUT_PRIVATE_PASS, new Command(mResources.ACCEPT, GameCanvas.instance, 88837, null), TField.INPUT_TYPE_NUMERIC);
+				break;
+			case 11000673:
+				GameCanvas.input2Dlg.setTitle(mResources.OLD_PASS, mResources.NEW_PASS);
+				GameCanvas.input2Dlg.tfInput.setMaxTextLenght(6);
+				GameCanvas.input2Dlg.tfInput2.setMaxTextLenght(6);
+				GameCanvas.input2Dlg.show(mResources.INPUT_PRIVATE_PASS, new Command(mResources.CLOSE, GameCanvas.instance, 8882, null), new Command(mResources.ACCEPT, GameCanvas.instance, 88838, null), TField.INPUT_TYPE_NUMERIC, TField.INPUT_TYPE_NUMERIC);
+				break;
+			case 11000674:
+				GameCanvas.inputDlg.tfInput.setMaxTextLenght(6);
+				GameCanvas.inputDlg.show(mResources.INPUT_PRIVATE_PASS, new Command(mResources.ACCEPT, GameCanvas.instance, 88839, null), TField.INPUT_TYPE_NUMERIC);
+				break;
+			case 1400962:
+				Service.gI().inviteClanBattlefieldAll();
+				break;
 		}
 	}
 
@@ -20598,15 +20604,15 @@ public class GameScr : mScreen, IChatable, IActionListener
 	{
 		switch (type)
 		{
-		case 1:
-			Service.gI().changePk(0);
-			break;
-		case 2:
-			Service.gI().changePk(Char.PK_NHOM);
-			break;
-		case 3:
-			Service.gI().changePk(3);
-			break;
+			case 1:
+				Service.gI().changePk(0);
+				break;
+			case 2:
+				Service.gI().changePk(Char.PK_NHOM);
+				break;
+			case 3:
+				Service.gI().changePk(3);
+				break;
 		}
 	}
 
@@ -20752,38 +20758,38 @@ public class GameScr : mScreen, IChatable, IActionListener
 		{
 			switch (idAction)
 			{
-			case 1:
-				Service.gI().addParty(Char.getMyChar().charFocus.cName);
-				break;
-			case 2:
-				Service.gI().tradeInvite(Char.getMyChar().charFocus.charID);
-				break;
-			case 3:
-				Service.gI().testInvite(Char.getMyChar().charFocus.charID);
-				break;
-			case 4:
-				Service.gI().addCuuSat(Char.getMyChar().charFocus.charID);
-				break;
-			case 5:
-				doRescuedOtherChar(Char.getMyChar().charFocus.charID);
-				break;
-			case 6:
-				Service.gI().addFriend(Char.getMyChar().charFocus.cName);
-				break;
-			case 7:
-				Service.gI().viewInfo(Char.getMyChar().charFocus.cName);
-				gI().resetButton();
-				break;
-			case 8:
-				Service.gI().clanInvite(Char.getMyChar().charFocus.charID);
-				break;
-			case 9:
-				Service.gI().clanPlease(Char.getMyChar().charFocus.charID);
-				break;
-			case 10:
-				Char.isAResuscitate = !Char.isAResuscitate;
-				Char.aCID = Char.getMyChar().charFocus.charID;
-				break;
+				case 1:
+					Service.gI().addParty(Char.getMyChar().charFocus.cName);
+					break;
+				case 2:
+					Service.gI().tradeInvite(Char.getMyChar().charFocus.charID);
+					break;
+				case 3:
+					Service.gI().testInvite(Char.getMyChar().charFocus.charID);
+					break;
+				case 4:
+					Service.gI().addCuuSat(Char.getMyChar().charFocus.charID);
+					break;
+				case 5:
+					doRescuedOtherChar(Char.getMyChar().charFocus.charID);
+					break;
+				case 6:
+					Service.gI().addFriend(Char.getMyChar().charFocus.cName);
+					break;
+				case 7:
+					Service.gI().viewInfo(Char.getMyChar().charFocus.cName);
+					gI().resetButton();
+					break;
+				case 8:
+					Service.gI().clanInvite(Char.getMyChar().charFocus.charID);
+					break;
+				case 9:
+					Service.gI().clanPlease(Char.getMyChar().charFocus.charID);
+					break;
+				case 10:
+					Char.isAResuscitate = !Char.isAResuscitate;
+					Char.aCID = Char.getMyChar().charFocus.charID;
+					break;
 			}
 		}
 	}
@@ -22513,15 +22519,15 @@ public class GameScr : mScreen, IChatable, IActionListener
 		MyVector myVector = new MyVector();
 		switch (type)
 		{
-		case 0:
-			myVector.addElement(cmdKhamNgocMoveOut_Ngoc);
-			break;
-		case 1:
-			myVector.addElement(cmdKhamNgocMoveOut_Item);
-			break;
-		case 2:
-			myVector.addElement(cmdKhamNgocMoveOut_Stone);
-			break;
+			case 0:
+				myVector.addElement(cmdKhamNgocMoveOut_Ngoc);
+				break;
+			case 1:
+				myVector.addElement(cmdKhamNgocMoveOut_Item);
+				break;
+			case 2:
+				myVector.addElement(cmdKhamNgocMoveOut_Stone);
+				break;
 		}
 		if (itemUpGrade != null && itemSplit != null)
 		{
@@ -22542,17 +22548,17 @@ public class GameScr : mScreen, IChatable, IActionListener
 		Item item = itemSplit;
 		switch (i)
 		{
-		default:
-			itemSplit = null;
-			break;
-		case 2:
-			item = getItemFocus(47);
-			arrItemUpGrade[indexSelect] = null;
-			break;
-		case 1:
-			item = itemUpGrade;
-			itemUpGrade = null;
-			break;
+			default:
+				itemSplit = null;
+				break;
+			case 2:
+				item = getItemFocus(47);
+				arrItemUpGrade[indexSelect] = null;
+				break;
+			case 1:
+				item = itemUpGrade;
+				itemUpGrade = null;
+				break;
 		}
 		Char.getMyChar().arrItemBag[item.indexUI] = item;
 		left = (center = null);
@@ -23464,6 +23470,41 @@ public class GameScr : mScreen, IChatable, IActionListener
 					ItemMap itemMap = (ItemMap)vItemMap.elementAt(i);
 					Service.gI().pickItem(itemMap.itemMapID);
 					thoigian = mSystem.currentTimeMillis();
+				}
+			}
+		}
+		catch (Exception)
+		{
+		}
+	}
+
+	public static void NhatDa()
+	{
+		if (nhatDaLv == -1)
+		{
+			return;
+		}
+		try
+		{
+			if (mSystem.currentTimeMillis() - thoigian > 1000)
+			{
+				for (int i = 0; i < vItemMap.size(); i++)
+				{
+					ItemMap itemMap = (ItemMap)vItemMap.elementAt(i);
+					if (itemMap.template.type == 26)
+					{
+						List<int> arr = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+						if (nhatDaLv > 0)
+						{
+							arr = arr.GetRange(nhatDaLv - 1, arr.Count - nhatDaLv + 1);
+						}
+
+						if (arr.Contains(itemMap.template.id))
+						{
+							Service.gI().pickItem(itemMap.itemMapID);
+							thoigian = mSystem.currentTimeMillis();
+						}
+					}
 				}
 			}
 		}

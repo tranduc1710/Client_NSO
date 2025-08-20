@@ -80,7 +80,7 @@ public class Main : MonoBehaviour
             started = true;
             ScaleGUI.initScaleGUI();
             IMEI = SystemInfo.deviceUniqueIdentifier;
-			isPC = false;
+			isPC = true;
             isWp = false;
             isAppTeam = false;
             IphoneVersionApp = false;

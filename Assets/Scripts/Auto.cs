@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 public abstract class Auto
 {
@@ -23,6 +24,9 @@ public abstract class Auto
 		static Actions()
 		{
 			reMap = true;
+			isTinhAnh = true;
+			isThuLinh = true;
+			isDieMP = true;
 		}
 	}
 
@@ -47,6 +51,8 @@ public abstract class Auto
 	public int mapID;
 
 	public int zoneID;
+
+	public int lastZoneID;
 
 	public long timecall;
 
@@ -241,6 +247,7 @@ public abstract class Auto
 
 	protected void Attack(int templateId, int mobID)
 	{
+
 		Char myChar = Char.getMyChar();
 		Mob mob = Char.getMyChar().mobFocus;
 		if (jdField_c_of_type_Int > 0 && jdField_d_of_type_Int > 0)
@@ -290,10 +297,12 @@ public abstract class Auto
 				}
 			}
 		}
+
 		if (myskill == null || myskill.isCooldown(100L))
 		{
 			return;
 		}
+
 		if (myChar.cMP < myskill.manaUse)
 		{
 			Code.Die();
@@ -307,8 +316,23 @@ public abstract class Auto
 		else if (myskill.template.type == 1)
 		{
 			Service.gI().sendPlayerAttack(Quai, Nguoi, 1);
+
 		}
+
 		myskill.Paint();
+
+		ArrayList skillTemplates = myChar.vSkill.a;
+		for (int k = 0; k < skillTemplates.Count; k++)
+		{
+			Skill skill = skillTemplates[k] as Skill;
+
+			if (2 == skill.template.type && skill.point > 0 && !skill.isCooldown() && skill.manaUse <= myChar.cMP)
+			{
+				Service.gI().selectSkill(skill.template.id);
+				Service.gI().sendUseSkillMyBuff();
+				skill.Paint();
+			}
+		}
 	}
 
 	protected void Q(Mob mob)
@@ -417,11 +441,16 @@ public abstract class Auto
 			return;
 		}
 		MyVector myVector = new MyVector();
+		int currentZone = TileMap.zoneID + 1;
+		if (currentZone >= GameScr.gI().zones.Length)
+		{
+			currentZone = 0;
+		}
 		for (int i = 0; i < GameScr.gI().zones.Length; i++)
 		{
 			bool flag = false;
 			int num = GameScr.gI().zones[i];
-			for (int j = 0; j < Code.s.size(); j++)
+			for (int j = currentZone; j < Code.s.size(); j++)
 			{
 				if (i == (int)Code.s.elementAt(j))
 				{
@@ -436,7 +465,7 @@ public abstract class Auto
 			if (myVector.size() <= 0)
 			{
 				myVector.addElement(i);
-				continue;
+				break;
 			}
 			for (int k = 0; k < myVector.size(); k++)
 			{
@@ -459,6 +488,7 @@ public abstract class Auto
 				zoneID = (int)myVector.elementAt(0);
 				Code.s.addElement((int)myVector.elementAt(0));
 				Code.timeChangeZone = mSystem.currentTimeMillis();
+				ChatPopup.addChatPopupMultiLine("[Ninja Hoa quả] Chuyển khu thành công!", 300, Char.getMyChar());
 			}
 		}
 	}
@@ -494,6 +524,7 @@ public abstract class Auto
 		}
 		else if (zone > -1 && TileMap.zoneID != zone)
 		{
+			lastZoneID = TileMap.zoneID;
 			ChuyenKhu(zone);
 			Code.Sleep(500);
 		}

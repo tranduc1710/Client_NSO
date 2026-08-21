@@ -191,7 +191,10 @@ public class Session_ME : ISession
 			}
 			catch (Exception ex)
 			{
-				Debug.LogError(num + "-----------------:" + ex.ToString());
+				if (connected)
+				{
+					Out.println("Socket read interrupted: " + ex.Message);
+				}
 			}
 			return null;
 		}
@@ -273,7 +276,7 @@ public class Session_ME : ISession
 			this.port = port;
 			getKeyComplete = false;
 			sc = null;
-			Debug.LogError("host: " + host + ":" + port);
+			Debug.Log("Connecting host: " + host + ":" + port);
 			initThread = new Thread(NetworkInit);
 			initThread.Start();
 		}
@@ -283,7 +286,7 @@ public class Session_ME : ISession
 	{
 		isCancel = false;
 		connecting = true;
-		Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
+		Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Normal;
 		connected = true;
 		try
 		{
@@ -295,7 +298,7 @@ public class Session_ME : ISession
 			if (messageHandler != null)
 			{
 				close();
-				Debug.LogError(">>>>>>>>>>>:" + ex.ToString());
+				Debug.Log($"Connection to {host}:{port} failed. Exception: {ex.Message}");
 				messageHandler.onConnectionFail();
 			}
 		}
@@ -304,6 +307,9 @@ public class Session_ME : ISession
 	public void doConnect(string host, int port)
 	{
 		sc = new TcpClient();
+		sc.SendTimeout = 5000;
+		sc.ReceiveTimeout = 5000;
+		sc.NoDelay = true;
 		sc.Connect(host, port);
 		sc.ReceiveBufferSize = 128000;
 		dataStream = sc.GetStream();

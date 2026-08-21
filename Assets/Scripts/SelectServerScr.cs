@@ -55,14 +55,11 @@ public class SelectServerScr : mScreen, IActionListener
 	public static void loadIP()
 	{
 		ipSelect = loadIndexServer();
-		if (ipSelect < 0 || ipSelect > GameMidlet.nameServer.Length - 1)
+		if (ipSelect < 0 || GameMidlet.nameServer == null || ipSelect >= GameMidlet.nameServer.Length)
 		{
-			loadInfoIp(GameMidlet.GetWorldIndex());
+			ipSelect = 0;
 		}
-		else
-		{
-			loadInfoIp(ipSelect);
-		}
+		loadInfoIp(ipSelect);
 	}
 
 	public static void loadInfoIp(int index)
@@ -71,13 +68,20 @@ public class SelectServerScr : mScreen, IActionListener
 		{
 			Session_ME.gI().close();
 		}
+		if (GameMidlet.ipList == null || index < 0 || index >= GameMidlet.ipList.Length)
+		{
+			index = 0;
+		}
 		ipSelect = index;
 		saveIndexServer(ipSelect);
 		GameMidlet.IP = GameMidlet.ipList[ipSelect];
 		GameMidlet.PORT = GameMidlet.portList[ipSelect];
 		GameMidlet.serverLogin = GameMidlet.serverLoginList[ipSelect];
 		mResources.loadLanguage(0);
-		GameCanvas.menu.menuSelectedItem = GameMidlet.serverST[ipSelect];
+		if (GameMidlet.serverST != null && ipSelect < GameMidlet.serverST.Length)
+		{
+			GameCanvas.menu.menuSelectedItem = GameMidlet.serverST[ipSelect];
+		}
 		GameCanvas.connect(5);
 	}
 
@@ -113,19 +117,6 @@ public class SelectServerScr : mScreen, IActionListener
 		}
 		GameScr.loadCamera(fullScreen: true);
 		GameScr.cmx = 100;
-		popupW = 170;
-		popupH = 175;
-		if (GameCanvas.w == 128 || GameCanvas.h <= 208)
-		{
-			popupW = 126;
-			popupH = 160;
-		}
-		popupX = GameCanvas.w / 2 - popupW / 2;
-		popupY = GameCanvas.h / 2 - popupH / 2;
-		if (GameCanvas.h <= 250)
-		{
-			popupY -= 10;
-		}
 		left = new Command(mResources.LANGUAGE, GameCanvas.instance, 8886, null);
 		right = new Command("Tài khoản", this, 12345, null);
 		indexRow = -1;
@@ -139,11 +130,10 @@ public class SelectServerScr : mScreen, IActionListener
 			cmdDoiTaiKhoan = new Command((!GameCanvas.isTouch) ? mResources.OK : string.Empty, this, 1001, null);
 			cmdChonServer = new Command((!GameCanvas.isTouch) ? mResources.OK : string.Empty, this, 1002, null);
 			cmdChoiTiep = new Command((!GameCanvas.isTouch) ? mResources.OK : string.Empty, this, 1003, null);
-			cmdUpdLinkSv = new Command((!GameCanvas.isTouch) ? mResources.OK : string.Empty, this, 20100, null);
 			cmd = new Command[2][]
 			{
-				new Command[4] { cmdChoiMoi, cmdDoiTaiKhoan, cmdChonServer, cmdUpdLinkSv },
-				new Command[5] { cmdChoiTiep, cmdChoiMoi, cmdDoiTaiKhoan, cmdChonServer, cmdUpdLinkSv }
+				new Command[3] { cmdChoiMoi, cmdDoiTaiKhoan, cmdChonServer },
+				new Command[4] { cmdChoiTiep, cmdChoiMoi, cmdDoiTaiKhoan, cmdChonServer }
 			};
 		}
 		uname = RMS.loadRMSString("acc");
@@ -156,30 +146,43 @@ public class SelectServerScr : mScreen, IActionListener
 		{
 			pass = string.Empty;
 		}
+		if (string.IsNullOrEmpty(mResources.NEW_PLAY) || string.IsNullOrEmpty(mResources.SERVER))
+		{
+			mResources.loadLanguage(0);
+		}
 		if ((uname == null || uname.Equals(string.Empty)) && unameChange.Equals(string.Empty))
 		{
-			menu = new string[4]
+			menu = new string[3]
 			{
 				mResources.NEW_PLAY,
 				mResources.CHANGE_ACC,
-				mResources.SERVER,
-				mResources.UPDATE_LINKSV
+				mResources.SERVER
 			};
 		}
 		else
 		{
-			menu = new string[5]
+			menu = new string[4]
 			{
 				mResources.COUNTINUE_PLAY,
 				mResources.NEW_PLAY,
 				mResources.CHANGE_ACC,
-				mResources.SERVER,
-				mResources.UPDATE_LINKSV
+				mResources.SERVER
 			};
 		}
-		GameCanvas.menu.menuSelectedItem = GameMidlet.GetWorldIndex();
-		GameMidlet.IP = GameMidlet.ipList[GameMidlet.GetWorldIndex()];
-		if (loadIndexServer() > -1 && loadIndexServer() < GameMidlet.ipList.Length)
+		popupW = 170;
+		popupH = 50 + menu.Length * 35 + 10;
+		if (GameCanvas.w == 128 || GameCanvas.h <= 208)
+		{
+			popupW = 126;
+			popupH = 45 + menu.Length * 30 + 10;
+		}
+		popupX = GameCanvas.w / 2 - popupW / 2;
+		popupY = GameCanvas.h / 2 - popupH / 2;
+		if (GameCanvas.h <= 250)
+		{
+			popupY -= 10;
+		}
+		if (loadIndexServer() > -1 && GameMidlet.ipList != null && loadIndexServer() < GameMidlet.ipList.Length)
 		{
 			GameCanvas.menu.menuSelectedItem = loadIndexServer();
 			GameMidlet.IP = GameMidlet.ipList[loadIndexServer()];
@@ -212,49 +215,56 @@ public class SelectServerScr : mScreen, IActionListener
 			GameCanvas.menu.menuSelectedItem = 0;
 		}
 		int num = popupY + 50;
+		int curInd = loadIndexServer();
+		string serverName = (GameMidlet.nameServer != null && curInd >= 0 && curInd < GameMidlet.nameServer.Length) ? GameMidlet.nameServer[curInd] : string.Empty;
 		for (int i = 0; i < menu.Length; i++)
 		{
-			g.setColor(Paint.COLORDARK);
-			g.fillRect(popupX + 10, num + i * 35, popupW - 20, 28);
-			GameCanvas.paintz.paintFrameBorder(popupX + 10, num + i * 35, popupW - 20, 28, g);
-			if (i == indexRow)
+			bool isSelected = (i == indexRow);
+			int btnX = popupX + 10;
+			int btnY = num + i * 35;
+			int btnW = popupW - 20;
+			int btnH = 28;
+
+			if (isSelected)
 			{
-				g.setColor(Paint.COLORLIGHT);
-				g.fillRect(popupX + 10, num + i * 35, popupW - 20, 28);
-				GameCanvas.paintz.paintFrameBorder(popupX + 10, num + i * 35, popupW - 20, 28, g);
+				g.setColor(6505770);
+				g.fillRect(btnX, btnY, btnW, btnH);
+				GameCanvas.paintz.paintFrameBorder(btnX, btnY, btnW, btnH, g);
+				GameCanvas.paintShukiren(btnX + 14, btnY + btnH / 2, g, noRotate: false);
+				GameCanvas.paintShukiren(btnX + btnW - 14, btnY + btnH / 2, g, noRotate: false);
 			}
-			if (i >= menu.Length)
+			else
 			{
-				continue;
+				g.setColor(Paint.COLORDARK);
+				g.fillRect(btnX, btnY, btnW, btnH);
+				GameCanvas.paintz.paintFrameBorder(btnX, btnY, btnW, btnH, g);
 			}
+
+			mFont fontDraw = isSelected ? mFont.tahoma_7b_yellow : mFont.tahoma_7b_white;
+
+			string itemText = menu[i];
 			if (uname.Equals(string.Empty) && unameChange.Equals(string.Empty))
 			{
 				if (i == 2)
 				{
-					string text = GameMidlet.nameServer[loadIndexServer()];
-					mFont.tahoma_7b_white.drawString(g, menu[i] + text, popupX + popupW / 2, num + i * 35 + 8, 2);
+					string prefix = (itemText.EndsWith(":") || itemText.EndsWith(": ")) ? itemText : (itemText + ": ");
+					itemText = prefix + serverName;
 				}
-				else
+			}
+			else
+			{
+				switch (i)
 				{
-					mFont.tahoma_7b_white.drawString(g, menu[i], popupX + popupW / 2, num + i * 35 + 6, 2);
+				case 0:
+					itemText = itemText + ((!unameChange.Equals(string.Empty)) ? (": " + unameChange) : ((!uname.StartsWith("tmpusr")) ? (": " + uname) : string.Empty));
+					break;
+				case 3:
+					string prefix2 = (itemText.EndsWith(":") || itemText.EndsWith(": ")) ? itemText : (itemText + ": ");
+					itemText = prefix2 + serverName;
+					break;
 				}
-				continue;
 			}
-			switch (i)
-			{
-			case 0:
-				mFont.tahoma_7b_white.drawString(g, menu[i] + ((!unameChange.Equals(string.Empty)) ? (": " + unameChange) : ((!uname.StartsWith("tmpusr")) ? (": " + uname) : string.Empty)), popupX + popupW / 2, num + i * 35 + 6, 2);
-				break;
-			case 3:
-			{
-				string text2 = GameMidlet.nameServer[loadIndexServer()];
-				mFont.tahoma_7b_white.drawString(g, menu[i] + text2, popupX + popupW / 2, num + i * 35 + 8, 2);
-				break;
-			}
-			default:
-				mFont.tahoma_7b_white.drawString(g, menu[i], popupX + popupW / 2, num + i * 35 + 6, 2);
-				break;
-			}
+			fontDraw.drawString(g, itemText, popupX + popupW / 2, btnY + (btnH - 16) / 2 + 1, 2);
 		}
 		if (GameCanvas.currentDialog == null)
 		{
@@ -302,7 +312,7 @@ public class SelectServerScr : mScreen, IActionListener
 				indexRow = 0;
 			}
 		}
-		if (GameCanvas.isPointerJustRelease && GameCanvas.isPointerHoldIn(popupX + 10, popupY + 45, popupW - 10, 170))
+		if (GameCanvas.isPointerJustRelease && GameCanvas.isPointerHoldIn(popupX + 10, popupY + 45, popupW - 10, menu.Length * 35 + 10))
 		{
 			if (GameCanvas.isPointerClick)
 			{
@@ -327,33 +337,18 @@ public class SelectServerScr : mScreen, IActionListener
 	protected void doSelectServer()
 	{
 		MyVector myVector = new MyVector();
-		if (GameMidlet.indexClient == 0)
+		if (GameMidlet.nameServer != null)
 		{
-			if (GameMidlet.isWorldver)
+			for (int i = 0; i < GameMidlet.nameServer.Length; i++)
 			{
-				for (int i = GameMidlet.GetLastIndex() + 1; i <= GameMidlet.language.Length - 1; i++)
-				{
-					myVector.addElement(new Command(GameMidlet.nameServer[i], this, 20000 + i, null));
-				}
-			}
-			else
-			{
-				for (int j = 0; j <= GameMidlet.GetLastIndex(); j++)
-				{
-					myVector.addElement(new Command(GameMidlet.nameServer[j], this, 20000 + j, null));
-				}
+				myVector.addElement(new Command(GameMidlet.nameServer[i], this, 20000 + i, null));
 			}
 			GameCanvas.menu.startAt(myVector, 0);
-			if (loadIndexServer() != -1)
+			int curInd = loadIndexServer();
+			if (curInd >= 0 && curInd < GameMidlet.nameServer.Length)
 			{
-				GameCanvas.menu.menuSelectedItem = GameMidlet.serverST[loadIndexServer()];
+				GameCanvas.menu.menuSelectedItem = curInd;
 			}
-		}
-		else
-		{
-			GameCanvas.menu.showMenu = false;
-			GameMidlet.IP = GameMidlet.ipList[GameMidlet.GetWorldIndex()];
-			saveIndexServer(GameMidlet.GetWorldIndex());
 		}
 	}
 
@@ -524,7 +519,7 @@ public class SelectServerScr : mScreen, IActionListener
 		}
 		else if (idAction != 10004)
 		{
-			if (idAction - 20000 <= 19)
+			if (idAction >= 20000 && GameMidlet.nameServer != null && idAction < 20000 + GameMidlet.nameServer.Length)
 			{
 				if (Session_ME.gI().isConnected())
 				{
@@ -536,14 +531,11 @@ public class SelectServerScr : mScreen, IActionListener
 				GameMidlet.PORT = GameMidlet.portList[num];
 				GameMidlet.serverLogin = GameMidlet.serverLoginList[num];
 				saveIndexServer(num);
-				GameCanvas.menu.menuSelectedItem = GameMidlet.serverST[num];
+				if (GameMidlet.serverST != null && num < GameMidlet.serverST.Length)
+				{
+					GameCanvas.menu.menuSelectedItem = GameMidlet.serverST[num];
+				}
 				GameCanvas.connect(7);
-			}
-			else if (idAction == 20100)
-			{
-				GameCanvas.startWaitDlg();
-				GameMidlet.getStrSv();
-				GameCanvas.endDlg();
 			}
 		}
 		else

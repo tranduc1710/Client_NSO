@@ -1,4 +1,5 @@
-﻿using System.Threading;
+using System;
+using System.Threading;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -45,61 +46,80 @@ public class Main : MonoBehaviour
 
 	public static bool isCompactDevice;
 
+	private void Awake()
+	{
+		main = this;
+		CheckInit();
+	}
+
 	private void Start()
 	{
-		if (!started)
+		CheckInit();
+	}
+
+	public void CheckInit()
+	{
+		if (!started || canvas == null || g == null || midlet == null)
 		{
-            
-            if (level == 1)
-            {
-                Screen.SetResolution(1024, 600, fullscreen: false);
-            }
-            else
-            {
-                Screen.SetResolution(1024, 600, fullscreen: false);
-            }
-            // Screen.SetResolution(Screen.width, Screen.height, true);
-            // Đặt tốc độ khung hình thành 60 FPS
-            Application.targetFrameRate = 30;
+			Init();
+		}
+	}
 
-            if (Thread.CurrentThread.Name != "Main")
-            {
-                Thread.CurrentThread.Name = "Main";
-            }
-            mainThreadName = Thread.CurrentThread.Name;
+	public void Init()
+	{
+		if (level == 1)
+		{
+			Screen.SetResolution(1024, 600, fullscreen: false);
+		}
+		else
+		{
+			Screen.SetResolution(1024, 600, fullscreen: false);
+		}
+		Application.targetFrameRate = 30;
 
-            // Các cài đặt ban đầu khác giữ nguyên như cũ
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
-            Application.runInBackground = true;
-            base.useGUILayout = false;
-            isCompactDevice = detectCompactDevice();
-            if (main == null)
-            {
-                main = this;
-            }
-            started = true;
-            ScaleGUI.initScaleGUI();
-            IMEI = SystemInfo.deviceUniqueIdentifier;
-			isPC = true;
-            isWp = false;
-            isAppTeam = false;
-            IphoneVersionApp = false;
-			if (isPC)
+		try
+		{
+			if (Thread.CurrentThread.Name != "Main")
 			{
-				Screen.fullScreen = false;
+				Thread.CurrentThread.Name = "Main";
 			}
-			if (!isPC)
-			{
-                GameCanvas.isTouch = true;
-            }
-            g = new mGraphics();
-            midlet = new GameMidlet();
-            GameMidlet.isWorldver = isWorldver;
-            canvas = new GameCanvas();
-            TileMap.loadTileMapArr();
-            SplashScr.gI().switchToMe();
-            Sound.init();
-        }
+		}
+		catch (Exception)
+		{
+		}
+		mainThreadName = Thread.CurrentThread.Name;
+
+		Screen.orientation = ScreenOrientation.LandscapeLeft;
+		Application.runInBackground = true;
+		base.useGUILayout = false;
+		isCompactDevice = detectCompactDevice();
+		if (main == null)
+		{
+			main = this;
+		}
+		started = true;
+		ScaleGUI.initScaleGUI();
+		IMEI = SystemInfo.deviceUniqueIdentifier;
+		isPC = true;
+		isWp = false;
+		isAppTeam = false;
+		IphoneVersionApp = false;
+		if (isPC)
+		{
+			Screen.fullScreen = false;
+		}
+		if (!isPC)
+		{
+			GameCanvas.isTouch = true;
+		}
+		mResources.loadLanguage(0);
+		g = new mGraphics();
+		midlet = new GameMidlet();
+		GameMidlet.isWorldver = isWorldver;
+		canvas = new GameCanvas();
+		TileMap.loadTileMapArr();
+		SplashScr.gI().switchToMe();
+		Sound.init();
 	}
 
 	public void doClearRMS()
@@ -114,6 +134,11 @@ public class Main : MonoBehaviour
 
 	private void OnGUI()
 	{
+		CheckInit();
+		if (canvas == null || g == null)
+		{
+			return;
+		}
 		checkInput();
 		Session_ME.update();
 		if (Event.current.type.Equals(EventType.Repaint) && paintCount <= updateCount)
@@ -126,6 +151,11 @@ public class Main : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		CheckInit();
+		if (canvas == null)
+		{
+			return;
+		}
 		ipKeyboard.update();
 		canvas.update();
 		RMS.update();
@@ -148,6 +178,10 @@ public class Main : MonoBehaviour
 
 	private void checkInput()
 	{
+		if (canvas == null)
+		{
+			return;
+		}
 		if (Input.GetMouseButtonDown(0))
 		{
 			Vector3 mousePosition = Input.mousePosition;

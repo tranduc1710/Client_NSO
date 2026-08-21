@@ -751,11 +751,11 @@ public class Char : MainObject
 		{
 			return Code.HackGiay;
 		}
-		if (isWolf || isMoto)
+		if (isWolf || isMoto || isNewMount || ID_HORSE > -1)
 		{
-			return cspeed + 2;
+			return 7;
 		}
-		return cspeed;
+		return 5;
 	}
 
 	public bool isUseLongRangeWeapon()

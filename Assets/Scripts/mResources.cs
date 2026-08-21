@@ -2575,5 +2575,6 @@ public class mResources
 		NEWPASS = string.Empty;
 		control1 = string.Empty;
 		control2 = string.Empty;
+		loadLanguage(0);
 	}
 }

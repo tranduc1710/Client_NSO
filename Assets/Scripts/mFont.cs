@@ -122,66 +122,95 @@ public class mFont
 
 	public string st2 = "\u00b8µ¶·¹\u00a8¾»¼½Æ©ÊÇÈÉËÐÌÎÏÑªÕÒÓÔÖÝ×ØÜÞãßáâä«èåæçé¬íêëìîóïñòô\u00adøõö÷ùýúûüþ®\u00b8µ¶·¹¡¾»¼½Æ¢ÊÇÈÉËÐÌÎÏÑ£ÕÒÓÔÖÝ×ØÜÞãßáâä¤èåæçé¥íêëìîóïñòô¦øõö÷ùýúûüþ§";
 
+	public static Font fontRegular;
+	public static Font fontBold;
+
+	public static Font GetRegularFont()
+	{
+		if (fontRegular == null)
+		{
+			try
+			{
+				fontRegular = Resources.Load<Font>("fonts/tahoma");
+			}
+			catch (Exception)
+			{
+			}
+			if (fontRegular == null)
+			{
+				try
+				{
+					fontRegular = Font.CreateDynamicFontFromOSFont(new string[] { "Tahoma", "Verdana", "Segoe UI", "Arial" }, 12);
+				}
+				catch (Exception)
+				{
+				}
+			}
+			if (fontRegular == null)
+			{
+				try
+				{
+					fontRegular = Resources.GetBuiltinResource<Font>("Arial.ttf");
+				}
+				catch (Exception)
+				{
+				}
+			}
+		}
+		return fontRegular;
+	}
+
+	public static Font GetBoldFont()
+	{
+		if (fontBold == null)
+		{
+			try
+			{
+				fontBold = Resources.Load<Font>("fonts/tahomabd");
+			}
+			catch (Exception)
+			{
+			}
+			if (fontBold == null)
+			{
+				try
+				{
+					fontBold = Font.CreateDynamicFontFromOSFont(new string[] { "Tahoma", "Verdana", "Segoe UI", "Arial" }, 12);
+				}
+				catch (Exception)
+				{
+				}
+			}
+			if (fontBold == null)
+			{
+				fontBold = GetRegularFont();
+			}
+		}
+		return fontBold;
+	}
+
+	public static bool IsBoldFont(sbyte fontId)
+	{
+		return (fontId >= 1 && fontId <= 7) || fontId == 16 || fontId == 27 || (fontId >= 22 && fontId <= 26);
+	}
+
+	public static Font GetDefaultFont()
+	{
+		return GetRegularFont();
+	}
+
 	public mFont(sbyte id)
 	{
-		//string text = "normalFont2";
-		//if (id > 0 && id < 8)
-		//{
-		//	text = "normalFont3";
-		//}
-		//else if (id >= 17 && id < 22)
-		//{
-		//	text = "normalFont0";
-		//}
-		//else if (id >= 8 && id <= 15)
-		//{
-		//	text = "normalFont1";
-		//}
-		//else if (id >= 22)
-		//{
-		//	text = "normalFont4";
-		//}
-		//if (id >= 28)
-		//{
-		//	text = "normalFont5";
-		//}
-		//if (id == 16)
-		//{
-		//	text = "normalFont3";
-		//}
-        string text = "chelthm";
-        if ((id > 0 && id < 10) || id == 19)
-        {
-            //yAdd = 1;
-            text = "barmeneb";
-        }
-        else if (id >= 10 && id <= 18)
-        {
-            text = "chelthm";
-           // yAdd = 2;
-        }
-        else if (id > 24)
-        {
-            text = "staccato";
-        }
-        this.id = id;
-		//text = "res/x" + mGraphics.zoomLevel + "/" + text;
-        text = "FontSys/x" + mGraphics.zoomLevel + "/" + text;
-        myFont = Resources.Load(text) as Font;
-        if (id < 25)
-        {
-            color1 = setColorFont(id);
-            color2 = setColorFont(id);
-        }
-        else
-        {
-            color1 = setColorFont(id);
-            color2 = setColorFont(id);
-        }
-        wO = getWidthExactOf("o");
-  //      color1 = setColorFont(id);
-		//color2 = setColorFont(id);
-		//wO = getWidthExactOf("o");
+		this.id = id;
+		bool isBold = IsBoldFont(id);
+		myFont = isBold ? GetBoldFont() : GetRegularFont();
+		if (myFont == null)
+		{
+			myFont = GetRegularFont();
+		}
+		color1 = setColorFont(id);
+		color2 = setColorFont(id);
+		wO = getWidthExactOf("o");
 	}
     //public Color bigColor(int id)
     //{
@@ -690,23 +719,27 @@ public class mFont
 
 	public int getWidthExactOf(string s)
 	{
+		if (string.IsNullOrEmpty(s))
+		{
+			return 0;
+		}
 		try
 		{
-			return (int)new GUIStyle
-			{
-				font = myFont
-			}.CalcSize(new GUIContent(s)).x / mGraphics.zoomLevel;
+			GUIStyle gUIStyle = new GUIStyle(GUI.skin.label);
+			bool isBold = IsBoldFont(id);
+			gUIStyle.font = isBold ? GetBoldFont() : GetRegularFont();
+			gUIStyle.fontSize = (fstyle > 0) ? (fstyle * mGraphics.zoomLevel) : ((isBold ? 7 : 6) * mGraphics.zoomLevel + 1);
+			return (int)(gUIStyle.CalcSize(new GUIContent(s)).x / mGraphics.zoomLevel);
 		}
-		catch (Exception ex)
+		catch (Exception)
 		{
-			Out.LogError("GET WIDTH OF " + s + " FAIL.\n" + ex.Message + "\n" + ex.StackTrace);
-			return getWidthNotExactOf(s);
+			return s.Length * 5;
 		}
 	}
 
 	public int getWidthNotExactOf(string s)
 	{
-		return s.Length * wO / mGraphics.zoomLevel;
+		return s.Length * 5;
 	}
 
 	public int getHeight()
@@ -715,24 +748,33 @@ public class mFont
 		{
 			return height / mGraphics.zoomLevel;
 		}
-		GUIStyle gUIStyle = new GUIStyle();
-		gUIStyle.font = myFont;
 		try
 		{
+			GUIStyle gUIStyle = new GUIStyle(GUI.skin.label);
+			bool isBold = IsBoldFont(id);
+			gUIStyle.font = isBold ? GetBoldFont() : GetRegularFont();
+			gUIStyle.fontSize = (fstyle > 0) ? (fstyle * mGraphics.zoomLevel) : ((isBold ? 7 : 6) * mGraphics.zoomLevel + 1);
 			height = (int)gUIStyle.CalcSize(new GUIContent("Adg")).y + 2;
 		}
-		catch (Exception ex)
+		catch (Exception)
 		{
-			Out.LogError("FAIL GET HEIGHT " + ex.StackTrace);
-			height = 20;
+			height = 12 * mGraphics.zoomLevel;
 		}
 		return height / mGraphics.zoomLevel;
 	}
 
 	public void _drawString(mGraphics g, string st, int x0, int y0, int align)
 	{
+		if (string.IsNullOrEmpty(st))
+		{
+			return;
+		}
 		GUIStyle gUIStyle = new GUIStyle(GUI.skin.label);
-		gUIStyle.font = myFont;
+		bool isBold = IsBoldFont(id);
+		gUIStyle.font = isBold ? GetBoldFont() : GetRegularFont();
+		gUIStyle.fontSize = (fstyle > 0) ? (fstyle * mGraphics.zoomLevel) : ((isBold ? 7 : 6) * mGraphics.zoomLevel + 1);
+		gUIStyle.fontStyle = isBold ? FontStyle.Bold : FontStyle.Normal;
+		gUIStyle.clipping = TextClipping.Overflow;
 		float num = 0f;
 		float num2 = 0f;
 		switch (align)

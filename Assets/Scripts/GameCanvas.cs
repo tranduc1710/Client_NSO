@@ -1676,6 +1676,7 @@ public class GameCanvas : IActionListener
 
 	public static void startOKDlg(string info)
 	{
+		isLoading = false;
 		msgdlg.setInfo(info, null, new Command(mResources.OK, instance, 8882, null), null);
 		LoginScr.isAutoLogin = false;
 		currentDialog = msgdlg;

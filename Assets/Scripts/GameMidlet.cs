@@ -56,6 +56,7 @@ public class GameMidlet
 	public GameMidlet()
 	{
 		MotherCanvas.instance = new MotherCanvas();
+		mResources.loadLanguage(0);
 		Session_ME.gI().setHandler(Controller.gI());
 		instance = this;
 		mFont.init();
@@ -195,92 +196,26 @@ public class GameMidlet
 		}
 	}
 
+	public const string DEFAULT_SERVER_LIST = "Bokken:112.213.84.18:14444:0:0,Shuriken:27.0.14.73:14444:0:0,Tessen:27.0.14.73:14444:0:0,Kunai:112.213.94.135:14444:0:0,Katana:112.213.94.161:14444:0:0,Tone:112.213.94.205:14444:0:0,Sanzu:27.0.12.8:14444:0:0,Sensha:27.0.12.11:14444:0:0,Hirosaki:13.251.169.132:14444:0:0,Haruna:54.151.133.77:14444:0:0";
+
 	public static void getStrSv()
 	{
-		string str = connectHTTP("https://raw.githubusercontent.com/ductc1710/ip_config/refs/heads/master/ip.txt");
-		// string str = "";
-		if (str == null || str.Length <= 0)
-		{
-			str = "Localhost:127.0.0.1:14444:0:0";
-		}
-		getServerList(str);
+		getServerList(DEFAULT_SERVER_LIST);
 	}
 
 	public static void loadLinkRMS()
 	{
-		sbyte[] array = RMS.loadRMS("NJlink");
-		if (array == null)
-		{
-			getStrSv();
-			return;
-		}
-		DataInputStream dataInputStream = new DataInputStream(array);
-		if (dataInputStream == null)
-		{
-			return;
-		}
-		try
-		{
-			sbyte b = dataInputStream.readByte();
-			nameServer = new string[b];
-			ipList = new string[b];
-			portList = new short[b];
-			serverLoginList = new sbyte[b];
-			language = new sbyte[b];
-			serverST = new sbyte[b];
-			for (int i = 0; i < b; i++)
-			{
-				nameServer[i] = dataInputStream.readUTF();
-				ipList[i] = dataInputStream.readUTF();
-				portList[i] = dataInputStream.readShort();
-				serverLoginList[i] = dataInputStream.readByte();
-				language[i] = dataInputStream.readByte();
-				serverST[i] = dataInputStream.readByte();
-			}
-			dataInputStream.close();
-			SelectServerScr.loadIP();
-		}
-		catch (IOException)
-		{
-		}
+		getServerList(DEFAULT_SERVER_LIST);
 	}
 
 	public static int GetWorldIndex()
 	{
-		int result = 0;
-		int num = mResources.Lang_VI;
-		if (isWorldver)
-		{
-			num = mResources.Lang_EN;
-		}
-		for (int i = 0; i <= language.Length - 1; i++)
-		{
-			if (language[i] == num)
-			{
-				return i;
-			}
-		}
-		return result;
+		return 0;
 	}
 
 	public static int GetLastIndex()
 	{
-		int result = 0;
-		for (int i = 0; i <= language.Length - 1; i++)
-		{
-			if (language[i] == mResources.Lang_EN)
-			{
-				return i - 1;
-			}
-		}
-		return result;
-	}
-
-	public static string connectHTTP(string link)
-	{
-		_ = string.Empty;
-		using WebClient webClient = new WebClient();
-		return webClient.DownloadString(link);
+		return (nameServer != null && nameServer.Length > 0) ? nameServer.Length - 1 : 0;
 	}
 
 	static GameMidlet()
@@ -291,7 +226,7 @@ public class GameMidlet
 		muzic = -1;
 		latitude = string.Empty;
 		longitude = string.Empty;
-		java = "Localhost:127.0.0.1:14444:0:0";
-		smartPhone = "Localhost:127.0.0.1:14444:0:0";
+		java = DEFAULT_SERVER_LIST;
+		smartPhone = DEFAULT_SERVER_LIST;
 	}
 }
